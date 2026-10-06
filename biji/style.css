@@ -1641,6 +1641,15 @@ a {
   background: var(--yellow);
 }
 
+.dev-tiktok {
+  background: #FFF0F5;
+}
+
+.dev-tiktok:hover {
+  background: #FE2C55;
+  color: #FFF;
+}
+
 .dev-btn-handle {
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -1696,6 +1705,17 @@ a {
 .dev-github:hover {
   background: var(--yellow);
   color: #000;
+}
+
+.dev-tiktok {
+  background: #FDF3F6;
+  border-color: #FE2C55;
+  color: #FE2C55;
+}
+
+.dev-tiktok:hover {
+  background: #FE2C55;
+  color: #FFF;
 }
 
 .dev-btn-text {
