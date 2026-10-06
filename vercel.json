@@ -8,6 +8,10 @@
     {
       "source": "/api/find",
       "destination": "/api/find.js"
+    },
+    {
+      "source": "/:path((?!api/|biji/).*)",
+      "destination": "/biji/:path"
     }
   ],
   "headers": [
