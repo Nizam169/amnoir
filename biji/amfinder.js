@@ -1,8 +1,8 @@
 /**
- * public/amfinder.js — SSE parser client module
+ * biji/amfinder.js — SSE parser client module
  *
  * Dipakai oleh:
- *   - public/app.js  (web UI)
+ *   - biji/app.js    (web UI)
  *   - cli.js         (CLI)
  *
  * API:

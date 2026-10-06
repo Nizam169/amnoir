@@ -1,7 +1,9 @@
 {
-  "version": 2,
-  "public": true,
   "cleanUrls": true,
+  "builds": [
+    { "src": "api/find.js", "use": "@vercel/node" },
+    { "src": "biji/**", "use": "@vercel/static" }
+  ],
   "rewrites": [
     {
       "source": "/api/find",

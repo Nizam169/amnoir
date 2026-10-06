@@ -6,10 +6,10 @@
  *   node cli.js <link-tiktok>
  *
  * Output: JSON murni di stdout (log proses di stderr).
- * Logika parser SSE diimpor dari public/amfinder.js (sumbernya sama).
+ * Logika parser SSE diimpor dari biji/amfinder.js (sumbernya sama).
  */
 
-import { fetchPreset } from "./public/amfinder.js";
+import { fetchPreset } from "./biji/amfinder.js";
 
 const args = process.argv.slice(2);
 if (!args.length || args.includes("-h") || args.includes("--help")) {

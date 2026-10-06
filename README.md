@@ -42,7 +42,7 @@ Buka di browser: **`http://localhost:3000`**
    ```
 2. Buka [Vercel Dashboard](https://vercel.com/new).
 3. Import repository GitHub Anda.
-4. Klik **Deploy**! Vercel akan secara otomatis mengonfigurasi Edge Function di `/api/find` dan menyajikan file statis di `public/`.
+4. Klik **Deploy**! Vercel akan secara otomatis mengonfigurasi Edge Function di `/api/find` dan menyajikan file statis di `biji/` (sudah didaftarkan via `vercel.json`).
 
 ### Opsi 2: Menggunakan Vercel CLI
 ```bash
@@ -58,7 +58,7 @@ vercel
 amnoir/
 ├── api/
 │   └── find.js         # Vercel Edge Function (Streaming proxy SSE)
-├── public/
+├── biji/               # Folder aset statis (dilayani oleh @vercel/static)
 │   ├── index.html      # UI 3D Neobrutalisme
 │   ├── style.css       # Design system 3D Neobrutalisme
 │   ├── app.js          # Controller UI & Event Handler

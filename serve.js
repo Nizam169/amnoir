@@ -2,7 +2,7 @@
 /**
  * serve.js — dev server lokal (mock perilaku Vercel Edge Function)
  *
- * Menyajikan folder public/ dan memproksi /api/find -> server scraper
+ * Menyajikan folder biji/ dan memproksi /api/find -> server scraper
  * dengan streaming SSE, persis seperti di Vercel nanti.
  *
  * Jalankan: npm run dev   (atau node serve.js)
@@ -15,7 +15,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PUBLIC_DIR = path.join(__dirname, "public");
+const PUBLIC_DIR = path.join(__dirname, "biji");
 const PORT = process.env.PORT || 3000;
 const UPSTREAM = "https://amfinder.web.id/api/find";
 const UA = "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
