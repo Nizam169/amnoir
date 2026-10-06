@@ -172,17 +172,6 @@
         </div>
       </div>
 
-      <!-- 4. EMPTY CARD STATE (NOT FOUND) -->
-      <div id="empty-card" class="neo-card empty-card hidden">
-        <div class="card-tag tag-yellow">TIDAK DITEMUKAN</div>
-        <div class="empty-body">
-          <h3>Preset Tidak Ditemukan di Video Ini</h3>
-          <p id="empty-desc" class="muted">
-            Sudah memeriksa deskripsi, bio akun, link-in-bio, serta seluruh komentar & balasan. Pastikan video memiliki tautan preset Alight Motion atau coba video TikTok lainnya.
-          </p>
-        </div>
-      </div>
-
       <!-- 5. RESULT SECTION (FOUND PRESETS) -->
       <section id="result-section" class="result-section hidden">
         <!-- Video & Creator Profile Card -->
@@ -260,8 +249,19 @@
           </div>
         </div>
 
+        <!-- Empty Preset State (video found, but no preset) -->
+        <div id="empty-card" class="neo-card empty-card hidden">
+          <div class="card-tag tag-yellow">PRESET TIDAK DITEMUKAN</div>
+          <div class="empty-body">
+            <h3>Tidak Ada Preset di Video Ini</h3>
+            <p id="empty-desc" class="muted">
+              Informasi video &amp; kreator tetap ditampilkan di atas. Sudah memeriksa deskripsi, bio akun, link-in-bio, serta seluruh komentar &amp; balasan. Pastikan video memiliki tautan preset Alight Motion atau coba video TikTok lainnya.
+            </p>
+          </div>
+        </div>
+
         <!-- Filter Category Tabs Header -->
-        <div class="filter-header-row">
+        <div id="filter-header-row" class="filter-header-row">
           <div class="filter-title-group">
             <h2 class="section-heading">DAFTAR PRESET DITEMUKAN</h2>
             <span class="found-counter-badge" id="total-preset-count">0 PRESET</span>

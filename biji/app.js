@@ -47,6 +47,7 @@ const statShares = $("#stat-shares");
 
 // Presets & Filters
 const totalPresetCount = $("#total-preset-count");
+const filterHeaderRow = $("#filter-header-row");
 const filterTabs = $("#filter-tabs");
 const countAll = $("#count-all");
 const count5mb = $("#count-5mb");
@@ -474,12 +475,27 @@ function renderResult(res) {
   progressTrack.style.width = "100%";
   progressLabel.textContent = "Selesai (100%)";
 
-  // Check if no presets were found
+  // Check if no presets were found — video info is still shown
   if (!allPresets.length) {
+    totalPresetCount.textContent = "0 PRESET DITEMUKAN";
+    countAll.textContent = 0;
+    count5mb.textContent = 0;
+    countXml.textContent = 0;
+
+    renderVideoDetails(res);
+    filterHeaderRow.classList.add("hidden");
+    presetsGrid.innerHTML = "";
     emptyCard.classList.remove("hidden");
-    emptyCard.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    resultSection.classList.remove("hidden");
+    resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    showToast("Video ditemukan, tapi tidak ada preset di video ini");
     return;
   }
+
+  // Presets found — make sure filter row & empty card are reset
+  filterHeaderRow.classList.remove("hidden");
+  emptyCard.classList.add("hidden");
 
   // Count items by type
   let count5 = 0;
