@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AMNOIR — Cari Preset Alight Motion dari Link TikTok</title>
+  <meta name="description" content="Pencari dan scraper link preset Alight Motion (5MB Cloud & XML File) otomatis dari video, bio akun, dan komentar TikTok dengan tema desain 3D Neobrutalisme." />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='92' height='92' x='4' y='4' rx='16' fill='%23FFE600' stroke='%23000' stroke-width='8'/%3E%3Cpath d='M28 70 L50 24 L72 70 L58 70 L50 50 L42 70 Z' fill='%23000'/%3E%3C/svg%3E" />
+  
+  <!-- Google Fonts: Space Grotesk, Archivo Black & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ==========================================
+       TOP RETRO MARQUEE TICKER BANNER
+       ========================================== -->
+  <div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker-move">
+      <span class="ticker-item">⚡ <b>AMNOIR 3D</b> — ALIGHT MOTION PRESET SCRAPER</span>
+      <span class="ticker-item">🔥 PRESET 5MB & XML OTOMATIS</span>
+      <span class="ticker-item">🚀 SCAN BIO, KOMENTAR & BALASAN</span>
+      <span class="ticker-item">📦 SIAP DEPLOY KE VERCEL EDGE</span>
+      <span class="ticker-item">⚡ <b>AMNOIR 3D</b> — ALIGHT MOTION PRESET SCRAPER</span>
+      <span class="ticker-item">🔥 PRESET 5MB & XML OTOMATIS</span>
+      <span class="ticker-item">🚀 SCAN BIO, KOMENTAR & BALASAN</span>
+      <span class="ticker-item">📦 SIAP DEPLOY KE VERCEL EDGE</span>
+    </div>
+  </div>
+
+  <div class="page-container">
+    <!-- ==========================================
+         SITE HEADER & HERO SECTION
+         ========================================== -->
+    <header class="neo-header">
+      <div class="brand-row">
+        <div class="brand-logo neo-box">
+          <span class="logo-icon">⚡</span>
+          <span class="logo-text">AM<b>NOIR</b></span>
+          <span class="badge-ver">3D</span>
+        </div>
+        
+        <div class="header-badges">
+          <button type="button" id="btn-open-wa-modal" class="neo-pill pill-wa">
+            <span class="dot-pulse"></span> 💬 Saluran WA
+          </button>
+          <span class="neo-pill pill-live">
+            <span class="dot-pulse"></span> AUTO SCANNER
+          </span>
+          <span class="neo-pill pill-feature">
+            🚀 5MB & XML
+          </span>
+        </div>
+      </div>
+
+      <div class="hero-text-block">
+        <h1 class="hero-title">TEMUKAN LINK PRESET <span class="highlight-yellow">ALIGHT MOTION</span> DARI TIKTOK!</h1>
+        <p class="hero-subtitle">
+          Tempel link video TikTok apa saja. Sistem akan membongkar deskripsi, bio akun, link-in-bio, hingga ratusan komentar & balasan untuk mengekstrak preset <b>5MB Cloud</b> & <b>XML File</b> secara instan.
+        </p>
+      </div>
+    </header>
+
+    <!-- ==========================================
+         MAIN INTERACTIVE WORKSPACE
+         ========================================== -->
+    <main class="main-content">
+      <!-- 1. SEARCH INPUT CARD -->
+      <section class="neo-card search-card">
+        <div class="card-tag">INPUT URL TIKTOK</div>
+        
+        <form id="form" class="search-form" autocomplete="off">
+          <div class="input-wrapper neo-box">
+            <span class="input-prefix-icon">🔗</span>
+            <input
+              id="url"
+              type="url"
+              name="url"
+              class="neo-input"
+              placeholder="https://vt.tiktok.com/ZSbmLgnUC/ atau https://www.tiktok.com/@user/video/..."
+              spellcheck="false"
+              autocapitalize="off"
+              autocorrect="off"
+              required
+            />
+            <button type="button" id="btn-paste" class="neo-btn btn-action-small" title="Tempel tautan dari clipboard">
+              📋 Paste
+            </button>
+            <button type="button" id="btn-clear" class="neo-btn btn-action-small hidden" title="Hapus input">
+              ✖
+            </button>
+          </div>
+
+          <div class="form-actions">
+            <button id="submit" class="neo-btn btn-submit" type="submit">
+              <span class="btn-icon">⚡</span>
+              <span class="btn-label">CARI PRESET SEKARANG</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Search History (Saved locally) -->
+        <div id="history-container" class="search-history hidden">
+          <div class="history-head">
+            <span class="history-label">🕒 RIWAYAT PENCARIAN TERAKHIR</span>
+            <button type="button" id="btn-clear-history" class="btn-text-danger">Hapus Riwayat</button>
+          </div>
+          <div id="history-chips" class="history-chips"></div>
+        </div>
+      </section>
+
+      <!-- 2. LIVE 3D PROGRESS & TERMINAL CARD -->
+      <section id="progress-card" class="neo-card progress-card hidden" aria-live="polite">
+        <div class="card-tag tag-cyan">⚡ SCANNING PROCESS (SSE STREAM)</div>
+        
+        <!-- 5-Step Visual Indicators -->
+        <div class="steps-grid">
+          <div class="step-block" id="step-1">
+            <span class="step-num">1</span>
+            <span class="step-txt">Resolve URL</span>
+          </div>
+          <div class="step-block" id="step-2">
+            <span class="step-num">2</span>
+            <span class="step-txt">Data Video</span>
+          </div>
+          <div class="step-block" id="step-3">
+            <span class="step-num">3</span>
+            <span class="step-txt">Bio Link</span>
+          </div>
+          <div class="step-block" id="step-4">
+            <span class="step-num">4</span>
+            <span class="step-txt">Komentar</span>
+          </div>
+          <div class="step-block" id="step-5">
+            <span class="step-num">5</span>
+            <span class="step-txt">Extract Preset</span>
+          </div>
+        </div>
+
+        <!-- 3D Chunky Progress Bar -->
+        <div class="progress-bar-container neo-box">
+          <div class="progress-track" id="progress-track"></div>
+          <span class="progress-status-badge" id="progress-label">Menghubungkan...</span>
+        </div>
+
+        <!-- Retro Live Terminal Console -->
+        <div class="terminal-box neo-box">
+          <div class="terminal-head">
+            <div class="term-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <span class="term-title">terminal.log — live stream</span>
+            <span class="term-live-tag">LIVE</span>
+          </div>
+          <ul id="log-list" class="log-list"></ul>
+        </div>
+      </section>
+
+      <!-- 3. ERROR CARD STATE -->
+      <div id="error-card" class="neo-card error-card hidden" role="alert">
+        <div class="card-tag tag-pink">❌ TERJADI KESALAHAN</div>
+        <div class="error-body">
+          <div class="error-icon-3d">💥</div>
+          <div class="error-content">
+            <h3 class="error-title">Pencarian Terhenti</h3>
+            <p id="error-msg" class="error-msg"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. EMPTY CARD STATE (NOT FOUND) -->
+      <div id="empty-card" class="neo-card empty-card hidden">
+        <div class="card-tag tag-yellow">🔍 TIDAK DITEMUKAN</div>
+        <div class="empty-body">
+          <div class="empty-icon-3d">🫥</div>
+          <h3>Preset Tidak Ditemukan di Video Ini</h3>
+          <p id="empty-desc" class="muted">
+            Sudah memeriksa deskripsi, bio akun, link-in-bio, serta seluruh komentar & balasan. Pastikan video memiliki tautan preset Alight Motion atau coba video TikTok lainnya.
+          </p>
+        </div>
+      </div>
+
+      <!-- 5. RESULT SECTION (FOUND PRESETS) -->
+      <section id="result-section" class="result-section hidden">
+        <!-- Video & Creator Profile Card -->
+        <div id="video-card" class="neo-card video-card">
+          <div class="card-tag tag-lime">🎬 INFORMASI VIDEO & KREATOR TIKTOK</div>
+          
+          <div class="video-content-layout">
+            <!-- Left: Media Preview (Video Player / Poster) -->
+            <div class="video-media-col">
+              <div class="video-media-wrap neo-box" id="video-media-container"></div>
+              <span class="media-hint">💡 Klik play untuk memutar video</span>
+            </div>
+
+            <!-- Right: Author, Stats, Bio, Description Details -->
+            <div class="video-details-col">
+              <!-- Creator Profile Bar -->
+              <div class="creator-profile-bar neo-box">
+                <div id="author-avatar-wrap" class="avatar-wrap neo-box"></div>
+                <div class="creator-names">
+                  <div class="creator-nick-row">
+                    <h2 id="author-nickname" class="creator-nick">-</h2>
+                    <span class="badge-creator">CREATOR</span>
+                  </div>
+                  <span id="author-uid" class="creator-handle">@username</span>
+                </div>
+                <a id="tiktok-direct-link" href="#" target="_blank" rel="noopener noreferrer" class="neo-btn btn-tiktok-out">
+                  Buka TikTok ↗
+                </a>
+              </div>
+
+              <!-- 3D Stat Counters Grid -->
+              <div class="stats-3d-grid">
+                <div class="stat-card neo-box stat-views">
+                  <span class="stat-icon">👁️</span>
+                  <div class="stat-val-group">
+                    <span class="stat-val" id="stat-views">0</span>
+                    <span class="stat-lbl">VIEWS</span>
+                  </div>
+                </div>
+                <div class="stat-card neo-box stat-likes">
+                  <span class="stat-icon">❤️</span>
+                  <div class="stat-val-group">
+                    <span class="stat-val" id="stat-likes">0</span>
+                    <span class="stat-lbl">LIKES</span>
+                  </div>
+                </div>
+                <div class="stat-card neo-box stat-comments">
+                  <span class="stat-icon">💬</span>
+                  <div class="stat-val-group">
+                    <span class="stat-val" id="stat-comments">0</span>
+                    <span class="stat-lbl">KOMENTAR</span>
+                  </div>
+                </div>
+                <div class="stat-card neo-box stat-shares">
+                  <span class="stat-icon">🔄</span>
+                  <div class="stat-val-group">
+                    <span class="stat-val" id="stat-shares">0</span>
+                    <span class="stat-lbl">SHARES</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Creator Bio Box -->
+              <div id="author-bio-wrap" class="info-section-box neo-box hidden">
+                <div class="info-section-head">
+                  <span class="info-icon">👤</span>
+                  <span class="info-label">BIO KREATOR</span>
+                </div>
+                <p id="author-bio" class="info-text"></p>
+              </div>
+
+              <!-- Caption / Video Description -->
+              <div id="video-caption-wrap" class="info-section-box neo-box hidden">
+                <div class="info-section-head">
+                  <span class="info-icon">📝</span>
+                  <span class="info-label">DESKRIPSI VIDEO</span>
+                </div>
+                <p id="video-caption" class="info-text"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Category Tabs Header -->
+        <div class="filter-header-row">
+          <div class="filter-title-group">
+            <h2 class="section-heading">DAFTAR PRESET DITEMUKAN</h2>
+            <span class="found-counter-badge" id="total-preset-count">0 PRESET</span>
+          </div>
+
+          <div id="filter-tabs" class="filter-tabs">
+            <button type="button" class="neo-chip filter-chip active" data-filter="all">
+              ⚡ Semua <span class="chip-count" id="count-all">0</span>
+            </button>
+            <button type="button" class="neo-chip filter-chip" data-filter="5mb">
+              🟢 5MB Cloud <span class="chip-count" id="count-5mb">0</span>
+            </button>
+            <button type="button" class="neo-chip filter-chip" data-filter="xml">
+              🔵 XML File <span class="chip-count" id="count-xml">0</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3D Preset Cards Grid -->
+        <div id="presets-grid" class="presets-grid"></div>
+      </section>
+    </main>
+
+    <!-- ==========================================
+         SITE FOOTER & DEVELOPER PROFILE
+         ========================================== -->
+    <footer class="neo-footer neo-card">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="logo-text">AM<b>NOIR</b> 3D</span>
+          <p class="footer-tagline">Pencari & Pengunduh Preset Alight Motion otomatis dari TikTok.</p>
+        </div>
+        
+        <!-- Developer Profile 3D Box -->
+        <div class="developer-box neo-box">
+          <div class="dev-label-group">
+            <span class="dev-badge">DEVELOPER</span>
+            <span class="dev-name">Nizam</span>
+          </div>
+          <div class="dev-links">
+            <a href="https://t.me/storenizam" target="_blank" rel="noopener noreferrer" class="neo-btn dev-btn dev-telegram" title="Telegram Developer @storenizam">
+              <svg class="dev-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.121l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.832.942z"/>
+              </svg>
+              <span class="dev-btn-text">Telegram</span>
+              <span class="dev-btn-handle">@storenizam</span>
+            </a>
+            <a href="https://github.com/nizam169" target="_blank" rel="noopener noreferrer" class="neo-btn dev-btn dev-github" title="GitHub Developer @nizam169">
+              <svg class="dev-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+              </svg>
+              <span class="dev-btn-text">GitHub</span>
+              <span class="dev-btn-handle">@nizam169</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div class="footer-chips">
+          <span class="neo-pill">⚡ High-Speed Engine</span>
+          <span class="neo-pill">🚀 Vercel Edge Compatible</span>
+          <span class="neo-pill">🛡️ 100% Free & No Ads</span>
+        </div>
+        <p class="disclaimer">© 2026 Developed by <b>Nizam</b>. Tidak berafiliasi dengan TikTok maupun Alight Creative, Inc.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ==========================================
+       3D QR CODE MODAL
+       ========================================== -->
+  <div id="qr-modal" class="qr-modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="qr-modal-card neo-card">
+      <button type="button" id="qr-modal-close" class="neo-btn qr-close-btn" aria-label="Tutup modal">✖</button>
+      <div class="card-tag tag-yellow">📱 SCAN VIA HP / ALIGHT MOTION</div>
+      
+      <div class="qr-body">
+        <h3 id="qr-preset-title" class="qr-title">Judul Preset</h3>
+        <span id="qr-preset-type" class="badge-type-pill">5MB</span>
+
+        <div class="qr-canvas-box neo-box">
+          <div id="qr-code-target"></div>
+        </div>
+
+        <p class="qr-help-txt">
+          Arahkan kamera smartphone atau scanner QR bawaan Alight Motion untuk mengimpor preset ini secara langsung.
+        </p>
+
+        <div class="qr-url-box neo-box">
+          <input type="text" id="qr-url-input" class="qr-url-input" readonly />
+          <button type="button" id="qr-copy-btn" class="neo-btn btn-action-small">📋 Salin</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       3D WHATSAPP CHANNEL POPUP MODAL
+       ========================================== -->
+  <div id="wa-modal" class="qr-modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="wa-modal-card neo-card">
+      <button type="button" id="wa-modal-close" class="neo-btn qr-close-btn" aria-label="Tutup modal">✖</button>
+      <div class="card-tag tag-lime">💬 SALURAN WHATSAPP RESMI</div>
+      
+      <div class="wa-modal-body">
+        <div class="wa-modal-badge-icon neo-box">
+          <svg width="46" height="46" viewBox="0 0 360 362" fill="none" aria-hidden="true" focusable="false">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M307.546 52.5655C273.709 18.685 228.706 0.0171895 180.756 0C81.951 0 1.53846 80.404 1.50408 179.235C1.48689 210.829 9.74646 241.667 25.4319 268.844L0 361.736L95.0236 336.811C121.203 351.096 150.683 358.616 180.679 358.625H180.756C279.544 358.625 359.966 278.212 360 179.381C360.017 131.483 341.392 86.4547 307.546 52.5741V52.5655ZM180.756 328.354H180.696C153.966 328.346 127.744 321.16 104.865 307.589L99.4242 304.358L43.034 319.149L58.0834 264.168L54.5423 258.53C39.6304 234.809 31.749 207.391 31.7662 179.244C31.8006 97.1036 98.6334 30.2707 180.817 30.2707C220.61 30.2879 258.015 45.8015 286.145 73.9665C314.276 102.123 329.755 139.562 329.738 179.364C329.703 261.513 262.871 328.346 180.756 328.346V328.354ZM262.475 216.777C257.997 214.534 235.978 203.704 231.869 202.209C227.761 200.713 224.779 199.966 221.796 204.452C218.814 208.939 210.228 219.029 207.615 222.011C205.002 225.002 202.389 225.372 197.911 223.128C193.434 220.885 179.003 216.158 161.891 200.902C148.578 189.024 139.587 174.362 136.975 169.875C134.362 165.389 136.7 162.965 138.934 160.739C140.945 158.728 143.412 155.505 145.655 152.892C147.899 150.279 148.638 148.406 150.133 145.423C151.629 142.432 150.881 139.82 149.764 137.576C148.646 135.333 139.691 113.287 135.952 104.323C132.316 95.5909 128.621 96.777 125.879 96.6309C123.266 96.5019 120.284 96.4762 117.293 96.4762C114.302 96.4762 109.454 97.5935 105.346 102.08C101.238 106.566 89.6691 117.404 89.6691 139.441C89.6691 161.478 105.716 182.785 107.959 185.776C110.202 188.767 139.544 234.001 184.469 253.408C195.153 258.023 203.498 260.782 210.004 262.845C220.731 266.257 230.494 265.776 238.212 264.624C246.816 263.335 264.71 253.786 268.44 243.326C272.17 232.866 272.17 223.893 271.053 222.028C269.936 220.163 266.945 219.037 262.467 216.794L262.475 216.777Z" fill="#25D366"/>
+          </svg>
+        </div>
+
+        <h3 class="wa-modal-title">GABUNG SALURAN WHATSAPP!</h3>
+        <p class="wa-modal-desc">
+          Jangan ketinggalan update link preset <b>Alight Motion 5MB & XML</b> terviral, preset jedag-jedug HD, sound viral, dan tutorial editing gratis setiap hari!
+        </p>
+
+        <div class="wa-modal-actions">
+          <a
+            id="wa-channel-join-btn"
+            href="https://whatsapp.com/channel/0029Vb9Elaz6WaKpjDSrZ522"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="neo-btn btn-wa-join"
+          >
+            <span>💬 GABUNG SALURAN SEKARANG</span>
+            <span>↗</span>
+          </a>
+          <button type="button" id="wa-modal-later" class="neo-btn btn-wa-later">
+            Nanti Saja
+          </button>
+        </div>
+
+        <label class="wa-dismiss-label" for="wa-modal-dont-show">
+          <input type="checkbox" id="wa-modal-dont-show" class="wa-checkbox" />
+          <span class="wa-checkbox-custom"></span>
+          <span class="wa-checkbox-text">Jangan tampilkan popup ini lagi</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       FLOATING 3D WHATSAPP BUTTON (BOTTOM-LEFT)
+       ========================================== -->
+  <a
+    href="https://whatsapp.com/channel/0029Vb9Elaz6WaKpjDSrZ522"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="floating-wa-btn neo-box"
+    id="floating-wa-btn"
+    title="Gabung Saluran WhatsApp Kami"
+  >
+    <span class="wa-icon-glow">💬</span>
+    <span class="wa-floating-label">Saluran WA</span>
+    <span class="wa-notification-badge">NEW</span>
+  </a>
+
+  <!-- ==========================================
+       TOAST NOTIFICATION CONTAINER
+       ========================================== -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- SCRIPTS -->
+  <script src="qrcode.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

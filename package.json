@@ -1,0 +1,15 @@
+{
+  "name": "amnoir",
+  "version": "1.0.0",
+  "description": "AMNOIR 3D — Cari preset Alight Motion lewat link TikTok (web)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node serve.js",
+    "start": "node serve.js",
+    "cli": "node cli.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
