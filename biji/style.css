@@ -1642,6 +1642,15 @@ a {
   color: #FFF;
 }
 
+.dev-whatsapp {
+  background: #F0FBF4;
+}
+
+.dev-whatsapp:hover {
+  background: #25D366;
+  color: #FFF;
+}
+
 .dev-btn-handle {
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -1707,6 +1716,17 @@ a {
 
 .dev-tiktok:hover {
   background: #FE2C55;
+  color: #FFF;
+}
+
+.dev-whatsapp {
+  background: #F4FCEF;
+  border-color: #25D366;
+  color: #128C40;
+}
+
+.dev-whatsapp:hover {
+  background: #25D366;
   color: #FFF;
 }
 
