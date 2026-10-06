@@ -1450,14 +1450,6 @@ a {
   background: var(--lime);
 }
 
-.wa-checkbox:checked::after {
-  content: "✓";
-  font-family: var(--font-display);
-  font-size: 0.75rem;
-  color: #000;
-  line-height: 1;
-}
-
 .wa-checkbox-text {
   font-size: 0.78rem;
   font-weight: 600;

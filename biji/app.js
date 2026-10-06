@@ -105,7 +105,7 @@ function fmtNum(n) {
 function showToast(message, type = "success") {
   const toast = document.createElement("div");
   toast.className = `neo-toast toast-${type}`;
-  toast.innerHTML = `<span>${type === "success" ? "✅" : "⚠️"}</span> <span>${esc(message)}</span>`;
+  toast.innerHTML = `<span>${esc(message)}</span>`;
   toastContainer.appendChild(toast);
 
   setTimeout(() => {
@@ -175,7 +175,7 @@ function addTerminalLog(msg) {
   const match = msg.match(/^\[(\d+)\/(\d+)\]/);
   if (match) {
     li.className = "step-log";
-    li.innerHTML = `⚡ <b>${esc(msg)}</b>`;
+    li.innerHTML = `<b>${esc(msg)}</b>`;
     const cur = parseInt(match[1], 10);
     const tot = parseInt(match[2], 10);
     updateStep(cur, tot);
@@ -334,7 +334,7 @@ function renderVideoDetails(result) {
     `;
   } else {
     videoMediaContainer.innerHTML = `
-      <div class="preset-thumb-fallback">🎬 <span>NO PREVIEW</span></div>
+      <div class="preset-thumb-fallback"><span>NO PREVIEW</span></div>
     `;
   }
 
@@ -392,7 +392,7 @@ function renderPresetCards(links) {
   links.forEach((p, idx) => {
     const type = (p.type || "5mb").toLowerCase();
     const is5mb = type === "5mb";
-    const typeLabel = is5mb ? "⚡ 5MB" : "📄 XML";
+    const typeLabel = is5mb ? "5MB" : "XML";
     const badgeClass = is5mb ? "badge-5mb" : "badge-xml";
     const thumb = p.thumb || (Array.isArray(p.thumbs) && p.thumbs[0]) || "";
 
@@ -400,11 +400,11 @@ function renderPresetCards(links) {
     card.className = "preset-card-3d";
     card.innerHTML = `
       <div class="preset-thumb-holder">
-        ${thumb ? `<img src="${esc(thumb)}" alt="${esc(p.title || "Preset")}" class="preset-thumb-img" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'preset-thumb-fallback\\'>⚡ <span>PRESET</span></div>'" />` : `<div class="preset-thumb-fallback">⚡ <span>${esc(type.toUpperCase())}</span></div>`}
+        ${thumb ? `<img src="${esc(thumb)}" alt="${esc(p.title || "Preset")}" class="preset-thumb-img" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'preset-thumb-fallback\\'><span>PRESET</span></div>'" />` : `<div class="preset-thumb-fallback"><span>${esc(type.toUpperCase())}</span></div>`}
         <div class="preset-badges-top">
           <span class="badge-type-pill ${badgeClass}">${typeLabel}</span>
-          ${p.pinned ? `<span class="badge-type-pill badge-pinned">📌 PINNED</span>` : ""}
-          ${p.verified ? `<span class="badge-type-pill badge-creator-tag">✓ VERIFIED</span>` : ""}
+          ${p.pinned ? `<span class="badge-type-pill badge-pinned">PINNED</span>` : ""}
+          ${p.verified ? `<span class="badge-type-pill badge-creator-tag">VERIFIED</span>` : ""}
         </div>
       </div>
 
@@ -413,22 +413,22 @@ function renderPresetCards(links) {
         
         <div class="preset-source-info">
           <div class="preset-source-row">
-            <span>📍 Sumber:</span>
+            <span>Sumber:</span>
             <b>${esc(p.source === "comment" ? "Komentar Video" : p.source === "bioLink" ? "Bio Link Akun" : p.source === "description" ? "Deskripsi" : p.source || "TikTok")}</b>
           </div>
-          ${p.detail ? `<div class="preset-source-row"><span>👤 Info:</span> <b>${esc(p.detail)}</b></div>` : ""}
+          ${p.detail ? `<div class="preset-source-row"><span>Info:</span> <b>${esc(p.detail)}</b></div>` : ""}
         </div>
 
         <div class="preset-card-actions">
           <a class="neo-btn btn-open-preset" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">
-            🚀 BUKA PRESET
+            BUKA PRESET
           </a>
           <div class="preset-sub-actions">
             <button type="button" class="neo-btn btn-copy-preset" data-copy="${esc(p.url)}">
-              📋 Salin Link
+              Salin Link
             </button>
             <button type="button" class="neo-btn btn-qr-preset" data-qr-idx="${idx}">
-              📱 QR Code
+              QR Code
             </button>
           </div>
         </div>
@@ -541,7 +541,7 @@ async function handleSearch(targetUrl) {
   resetUI();
   progressCard.classList.remove("hidden");
   submitBtn.disabled = true;
-  submitBtn.innerHTML = `<span>⏳</span> <span>MEMINDAI PRESET...</span>`;
+  submitBtn.innerHTML = `<span class="btn-label">MEMINDAI PRESET...</span>`;
   urlInput.disabled = true;
 
   try {
@@ -554,7 +554,7 @@ async function handleSearch(targetUrl) {
     showError(err.message || "Terjadi kesalahan saat memproses permintaan.");
   } finally {
     submitBtn.disabled = false;
-    submitBtn.innerHTML = `<span class="btn-icon">⚡</span> <span class="btn-label">CARI PRESET SEKARANG</span>`;
+    submitBtn.innerHTML = `<span class="btn-label">CARI PRESET SEKARANG</span>`;
     urlInput.disabled = false;
   }
 }
@@ -623,7 +623,7 @@ presetsGrid.addEventListener("click", async (e) => {
     try {
       await navigator.clipboard.writeText(link);
       const original = copyBtn.innerHTML;
-      copyBtn.innerHTML = `✅ Tersalin!`;
+      copyBtn.innerHTML = `Tersalin!`;
       showToast("Link preset berhasil disalin!");
       setTimeout(() => {
         copyBtn.innerHTML = original;
@@ -651,10 +651,10 @@ presetsGrid.addEventListener("click", async (e) => {
 qrCopyBtn.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(qrUrlInput.value);
-    qrCopyBtn.textContent = "✅ Tersalin!";
+    qrCopyBtn.textContent = "Tersalin!";
     showToast("Link preset berhasil disalin!");
     setTimeout(() => {
-      qrCopyBtn.textContent = "📋 Salin";
+      qrCopyBtn.textContent = "Salin";
     }, 1400);
   } catch {
     showToast("Gagal menyalin", "error");
