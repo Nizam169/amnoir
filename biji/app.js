@@ -106,7 +106,10 @@ function fmtNum(n) {
 function showToast(message, type = "success") {
   const toast = document.createElement("div");
   toast.className = `neo-toast toast-${type}`;
-  toast.innerHTML = `<span>${esc(message)}</span>`;
+  const iconSvg = type === "error"
+    ? `<svg class="toast-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`
+    : `<svg class="toast-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
+  toast.innerHTML = `${iconSvg}<span>${esc(message)}</span>`;
   toastContainer.appendChild(toast);
 
   setTimeout(() => {
@@ -404,8 +407,8 @@ function renderPresetCards(links) {
         ${thumb ? `<img src="${esc(thumb)}" alt="${esc(p.title || "Preset")}" class="preset-thumb-img" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'preset-thumb-fallback\\'><span>PRESET</span></div>'" />` : `<div class="preset-thumb-fallback"><span>${esc(type.toUpperCase())}</span></div>`}
         <div class="preset-badges-top">
           <span class="badge-type-pill ${badgeClass}">${typeLabel}</span>
-          ${p.pinned ? `<span class="badge-type-pill badge-pinned">PINNED</span>` : ""}
-          ${p.verified ? `<span class="badge-type-pill badge-creator-tag">VERIFIED</span>` : ""}
+          ${p.pinned ? `<span class="badge-type-pill badge-pinned"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.89A2 2 0 0 1 15 10.77V6a3 3 0 0 0-6 0v4.77a2 2 0 0 1-1.11 1.79l-1.78.89A2 2 0 0 0 5 15.24Z"/></svg> PINNED</span>` : ""}
+          ${p.verified ? `<span class="badge-type-pill badge-creator-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> VERIFIED</span>` : ""}
         </div>
       </div>
 
@@ -422,14 +425,17 @@ function renderPresetCards(links) {
 
         <div class="preset-card-actions">
           <a class="neo-btn btn-open-preset" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">
-            BUKA PRESET
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <span>BUKA PRESET</span>
           </a>
           <div class="preset-sub-actions">
             <button type="button" class="neo-btn btn-copy-preset" data-copy="${esc(p.url)}">
-              Salin Link
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Salin</span>
             </button>
             <button type="button" class="neo-btn btn-qr-preset" data-qr-idx="${idx}">
-              QR Code
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="7" y1="7" x2="7.01" y2="7"/><line x1="17" y1="7" x2="17.01" y2="7"/><line x1="17" y1="17" x2="17.01" y2="17"/><line x1="7" y1="17" x2="7.01" y2="17"/></svg>
+              <span>QR</span>
             </button>
           </div>
         </div>
@@ -557,7 +563,10 @@ async function handleSearch(targetUrl) {
   resetUI();
   progressCard.classList.remove("hidden");
   submitBtn.disabled = true;
-  submitBtn.innerHTML = `<span class="btn-label">MEMINDAI PRESET...</span>`;
+  submitBtn.innerHTML = `
+    <svg class="spin-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+    <span class="btn-label">MEMINDAI PRESET...</span>
+  `;
   urlInput.disabled = true;
 
   try {
@@ -570,7 +579,10 @@ async function handleSearch(targetUrl) {
     showError(err.message || "Terjadi kesalahan saat memproses permintaan.");
   } finally {
     submitBtn.disabled = false;
-    submitBtn.innerHTML = `<span class="btn-label">CARI PRESET SEKARANG</span>`;
+    submitBtn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+      <span class="btn-label">CARI PRESET SEKARANG</span>
+    `;
     urlInput.disabled = false;
   }
 }
@@ -639,7 +651,7 @@ presetsGrid.addEventListener("click", async (e) => {
     try {
       await navigator.clipboard.writeText(link);
       const original = copyBtn.innerHTML;
-      copyBtn.innerHTML = `Tersalin!`;
+      copyBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Tersalin!</span>`;
       showToast("Link preset berhasil disalin!");
       setTimeout(() => {
         copyBtn.innerHTML = original;

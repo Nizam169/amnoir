@@ -168,6 +168,41 @@ function sendJson(res, status, obj, extra = {}) {
   });
 }
 
+async function handleHandshake(req, res) {
+  if (req.method === "OPTIONS") {
+    send(res, 204, null, {
+      "access-control-allow-origin": "*",
+      "access-control-allow-methods": "POST, OPTIONS",
+      "access-control-allow-headers": "content-type, accept",
+    });
+    return;
+  }
+
+  let body = "";
+  req.on("data", (chunk) => {
+    body += chunk;
+  });
+  req.on("end", async () => {
+    try {
+      const upstreamRes = await fetch(`${BASE_UPSTREAM}/api/v/7f91a2e4`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "user-agent": UA,
+          origin: BASE_UPSTREAM,
+          referer: `${BASE_UPSTREAM}/`,
+        },
+        body,
+      });
+
+      const data = await upstreamRes.json().catch(() => ({}));
+      sendJson(res, upstreamRes.status, data);
+    } catch (err) {
+      sendJson(res, 502, { ok: false, error: err.message });
+    }
+  });
+}
+
 async function handleApi(req, res) {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   const target = url.searchParams.get("url") || "";
@@ -186,12 +221,15 @@ async function handleApi(req, res) {
     return;
   }
 
-  let token;
-  try {
-    token = await getToken();
-  } catch (e) {
-    sendJson(res, 502, { ok: false, error: `gagal verifikasi keamanan scraper (${e.message})` });
-    return;
+  const clientToken = url.searchParams.get("t") || "";
+  let token = clientToken;
+  if (!token) {
+    try {
+      token = await getToken();
+    } catch (e) {
+      sendJson(res, 502, { ok: false, error: `gagal verifikasi keamanan scraper (${e.message})` });
+      return;
+    }
   }
 
   let upstream;
@@ -276,6 +314,7 @@ async function handleStatic(req, res) {
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   if (url.pathname === "/api/find") return handleApi(req, res);
+  if (url.pathname === "/api/handshake") return handleHandshake(req, res);
   return handleStatic(req, res);
 });
 

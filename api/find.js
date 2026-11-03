@@ -161,11 +161,14 @@ export default async function handler(req) {
     return json({ ok: false, error: "parameter ?url= kosong. Contoh: /api/find?url=https://vt.tiktok.com/xxx" }, 400);
   }
 
-  let token;
-  try {
-    token = await getToken();
-  } catch (e) {
-    return json({ ok: false, error: `gagal verifikasi keamanan scraper (${e.message})` }, 502);
+  const clientToken = url.searchParams.get("t") || "";
+  let token = clientToken;
+  if (!token) {
+    try {
+      token = await getToken();
+    } catch (e) {
+      return json({ ok: false, error: `gagal verifikasi keamanan scraper (${e.message})` }, 502);
+    }
   }
 
   let upstream;
