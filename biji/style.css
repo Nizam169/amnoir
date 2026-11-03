@@ -562,6 +562,36 @@ input, button {
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
 }
 
+.btn-action-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #141419;
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-action-icon:hover {
+  background: #202028;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+.btn-copied {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.6) !important;
+  transform: scale(1.05);
+}
+
 .btn-submit {
   width: 100%;
   padding: 15px 22px;
@@ -1467,20 +1497,40 @@ input, button {
 }
 
 .preset-sub-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  align-items: center;
   gap: 8px;
 }
 
-.btn-copy-preset,
-.btn-qr-preset {
-  padding: 8px 10px;
+.btn-copy-preset {
+  flex: 0 0 42px;
+  height: 38px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-mono);
-  font-size: 0.76rem;
   background: #141419;
   color: var(--text-secondary);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.btn-qr-preset {
+  flex: 1;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  background: #141419;
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
 }
 
 .btn-copy-preset:hover,

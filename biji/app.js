@@ -438,12 +438,11 @@ function renderPresetCards(links) {
             <span>BUKA PRESET</span>
           </a>
           <div class="preset-sub-actions">
-            <button type="button" class="neo-btn btn-copy-preset" data-copy="${esc(p.url)}">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              <span>Salin</span>
+            <button type="button" class="neo-btn btn-copy-preset btn-action-icon" data-copy="${esc(p.url)}" title="Salin link preset" aria-label="Salin link preset">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             </button>
-            <button type="button" class="neo-btn btn-qr-preset" data-qr-idx="${idx}">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="7" y1="7" x2="7.01" y2="7"/><line x1="17" y1="7" x2="17.01" y2="7"/><line x1="17" y1="17" x2="17.01" y2="17"/><line x1="7" y1="17" x2="7.01" y2="17"/></svg>
+            <button type="button" class="neo-btn btn-qr-preset" data-qr-idx="${idx}" title="Scan QR Code" aria-label="Scan QR Code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="7" y1="7" x2="7.01" y2="7"/><line x1="17" y1="7" x2="17.01" y2="7"/><line x1="17" y1="17" x2="17.01" y2="17"/><line x1="7" y1="17" x2="7.01" y2="17"/></svg>
               <span>QR</span>
             </button>
           </div>
@@ -662,10 +661,12 @@ presetsGrid.addEventListener("click", async (e) => {
     try {
       await navigator.clipboard.writeText(link);
       const original = copyBtn.innerHTML;
-      copyBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Tersalin!</span>`;
+      copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+      copyBtn.classList.add("btn-copied");
       showToast("Link preset berhasil disalin!");
       setTimeout(() => {
         copyBtn.innerHTML = original;
+        copyBtn.classList.remove("btn-copied");
       }, 1500);
     } catch {
       showToast("Gagal menyalin link", "error");
@@ -690,11 +691,14 @@ presetsGrid.addEventListener("click", async (e) => {
 qrCopyBtn.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(qrUrlInput.value);
-    qrCopyBtn.textContent = "Tersalin!";
+    const original = qrCopyBtn.innerHTML;
+    qrCopyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+    qrCopyBtn.classList.add("btn-copied");
     showToast("Link preset berhasil disalin!");
     setTimeout(() => {
-      qrCopyBtn.textContent = "Salin";
-    }, 1400);
+      qrCopyBtn.innerHTML = original;
+      qrCopyBtn.classList.remove("btn-copied");
+    }, 1500);
   } catch {
     showToast("Gagal menyalin", "error");
   }
