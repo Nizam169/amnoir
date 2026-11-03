@@ -17,8 +17,129 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(__dirname, "biji");
 const PORT = process.env.PORT || 3000;
-const UPSTREAM = "https://amfinder.web.id/api/find";
-const UA = "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
+const BASE_UPSTREAM = "https://amfinder.web.id";
+const UPSTREAM = `${BASE_UPSTREAM}/api/find`;
+const UA = "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
+
+function toHex(buf) {
+  const bytes = buf instanceof Uint8Array ? buf : new Uint8Array(buf);
+  let hex = "";
+  for (let i = 0; i < bytes.length; i++) {
+    hex += bytes[i].toString(16).padStart(2, "0");
+  }
+  return hex;
+}
+
+function parseHex(hex) {
+  const bytes = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < bytes.length; i++) {
+    bytes[i] = parseInt(hex.slice(2 * i, 2 * i + 2), 16);
+  }
+  return bytes;
+}
+
+let cachedToken = null;
+let cachedExp = 0;
+let pendingTokenPromise = null;
+
+async function fetchSecurityToken() {
+  const did = crypto.randomUUID();
+  const step1Res = await fetch(`${BASE_UPSTREAM}/api/v/7f91a2e4`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "user-agent": UA,
+      origin: BASE_UPSTREAM,
+      referer: `${BASE_UPSTREAM}/`,
+    },
+    body: JSON.stringify({ did }),
+  });
+
+  const step1 = await step1Res.json().catch(() => ({}));
+  if (!step1Res.ok || !step1.ok) {
+    throw new Error(step1.error || `handshake step 1 failed (${step1Res.status})`);
+  }
+
+  const { cid, salt, ts, rounds } = step1;
+  let hash = 0;
+  for (let idx = 0; idx < salt.length; idx++) {
+    hash = ((hash << 5) - hash + salt.charCodeAt(idx)) | 0;
+  }
+  const env = {
+    c: hash || 1847291,
+    sw: 1080,
+    sh: 2400,
+    cd: 24,
+    dpr: 2.75,
+    tz: "Asia/Jakarta",
+    tzo: -420,
+    hc: 8,
+    mtp: 5,
+    w: true,
+    d: true,
+  };
+
+  const bsigRaw = `${cid}|${salt}|${env.c}|${env.sw}x${env.sh}|${env.cd}|${env.tz}|${env.tzo}|${env.hc}`;
+  const bsigBuf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(bsigRaw));
+  const bsig = toHex(bsigBuf);
+
+  const keyBytes = parseHex(salt);
+  const hmacKey = await crypto.subtle.importKey(
+    "raw",
+    keyBytes,
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+
+  let data = new TextEncoder().encode(`${cid}|${did}|${ts}|${bsig}`);
+  const roundsLimit = Math.max(1, Math.min(100000, Math.floor(rounds)));
+  for (let i = 0; i < roundsLimit; i++) {
+    data = new Uint8Array(await crypto.subtle.sign("HMAC", hmacKey, data));
+  }
+  const proof = toHex(data);
+
+  const step2Res = await fetch(`${BASE_UPSTREAM}/api/v/7f91a2e4`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "user-agent": UA,
+      origin: BASE_UPSTREAM,
+      referer: `${BASE_UPSTREAM}/`,
+    },
+    body: JSON.stringify({
+      cid,
+      did,
+      ts,
+      proof,
+      bsig,
+      env,
+      score: 0,
+      reasons: [],
+    }),
+  });
+
+  const step2 = await step2Res.json().catch(() => ({}));
+  if (!step2Res.ok || !step2.ok || !step2.token) {
+    throw new Error(step2.error || `handshake step 2 failed (${step2Res.status})`);
+  }
+
+  cachedToken = step2.token;
+  cachedExp = step2.exp || (Date.now() + 120000);
+  return cachedToken;
+}
+
+async function getToken() {
+  if (cachedToken && Date.now() < cachedExp - 15000) {
+    return cachedToken;
+  }
+  if (!pendingTokenPromise) {
+    pendingTokenPromise = fetchSecurityToken().finally(() => {
+      pendingTokenPromise = null;
+    });
+  }
+  return pendingTokenPromise;
+}
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -65,11 +186,35 @@ async function handleApi(req, res) {
     return;
   }
 
+  let token;
+  try {
+    token = await getToken();
+  } catch (e) {
+    sendJson(res, 502, { ok: false, error: `gagal verifikasi keamanan scraper (${e.message})` });
+    return;
+  }
+
   let upstream;
   try {
-    upstream = await fetch(`${UPSTREAM}?url=${encodeURIComponent(target)}`, {
-      headers: { accept: "text/event-stream", "user-agent": UA },
+    upstream = await fetch(`${UPSTREAM}?url=${encodeURIComponent(target)}&t=${encodeURIComponent(token)}`, {
+      headers: {
+        accept: "text/event-stream",
+        "user-agent": UA,
+        referer: `${BASE_UPSTREAM}/`,
+      },
     });
+
+    if (upstream.status === 403) {
+      cachedToken = null;
+      token = await fetchSecurityToken();
+      upstream = await fetch(`${UPSTREAM}?url=${encodeURIComponent(target)}&t=${encodeURIComponent(token)}`, {
+        headers: {
+          accept: "text/event-stream",
+          "user-agent": UA,
+          referer: `${BASE_UPSTREAM}/`,
+        },
+      });
+    }
   } catch (e) {
     sendJson(res, 502, { ok: false, error: `tidak bisa menghubungi server scraper (${e.message})` });
     return;
