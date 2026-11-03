@@ -51,6 +51,7 @@ const errorCard = $("#error-card");
 const errorMsg = $("#error-msg");
 const emptyCard = $("#empty-card");
 const resultSection = $("#result-section");
+const landingShowcase = $("#landing-showcase");
 
 // Video Details Elements
 const videoMediaContainer = $("#video-media-container");
@@ -77,14 +78,7 @@ const count5mb = $("#count-5mb");
 const countXml = $("#count-xml");
 const presetsGrid = $("#presets-grid");
 
-// QR Modal & WA Modal Elements
-const qrModal = $("#qr-modal");
-const qrModalClose = $("#qr-modal-close");
-const qrPresetTitle = $("#qr-preset-title");
-const qrPresetType = $("#qr-preset-type");
-const qrCodeTarget = $("#qr-code-target");
-const qrUrlInput = $("#qr-url-input");
-const qrCopyBtn = $("#qr-copy-btn");
+// Toast & WA Modal Elements
 const toastContainer = $("#toast-container");
 
 const waModal = $("#wa-modal");
@@ -180,6 +174,7 @@ function resetUI() {
   emptyCard.classList.add("hidden");
   resultSection.classList.add("hidden");
   progressCard.classList.add("hidden");
+  if (landingShowcase) landingShowcase.classList.remove("hidden");
 
   logList.innerHTML = "";
   presetsGrid.innerHTML = "";
@@ -356,7 +351,7 @@ async function executeSongSearch(query) {
 
   hideSuggestions();
   btnSubmitSearch.disabled = true;
-  btnSearchLabel.textContent = "MEMINDAI DAFTAR VIDEO...";
+  btnSearchLabel.textContent = "Memindai...";
 
   try {
     const res = await fetch(`/api/search?q=${encodeURIComponent(q)}&p=${selectedPlatform}`);
@@ -372,7 +367,7 @@ async function executeSongSearch(query) {
     showToast(err.message || "Gagal mencari video.", "error");
   } finally {
     btnSubmitSearch.disabled = false;
-    btnSearchLabel.textContent = "CARI PRESET DARI LAGU";
+    btnSearchLabel.textContent = "Cari Preset";
   }
 }
 
@@ -427,43 +422,6 @@ function renderSearchResults(items, query) {
 
   searchResultsSection.classList.remove("hidden");
   searchResultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
-/**
- * QR Code Generator & Modal
- */
-function openQrModal(preset) {
-  qrPresetTitle.textContent = preset.title || "Alight Motion Preset";
-  qrPresetType.textContent = (preset.type || "5MB").toUpperCase();
-  qrPresetType.className = `badge-type-pill badge-${preset.type || "5mb"}`;
-  qrUrlInput.value = preset.url;
-  qrCodeTarget.innerHTML = "";
-
-  try {
-    if (typeof window.qrcode === "function") {
-      const qr = window.qrcode(0, "M");
-      qr.addData(preset.url);
-      qr.make();
-      qrCodeTarget.innerHTML = qr.createSvgTag({
-        scalable: true,
-        cellSize: 6,
-        margin: 2,
-      });
-    } else {
-      const img = document.createElement("img");
-      img.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(preset.url)}`;
-      img.alt = "QR Code";
-      qrCodeTarget.appendChild(img);
-    }
-  } catch (err) {
-    qrCodeTarget.innerHTML = `<p class="muted">Gagal membuat QR: ${esc(err.message)}</p>`;
-  }
-
-  qrModal.classList.remove("hidden");
-}
-
-function closeQrModal() {
-  qrModal.classList.add("hidden");
 }
 
 /**
@@ -640,10 +598,6 @@ function renderPresetCards(links) {
             <button type="button" class="neo-btn btn-copy-preset btn-action-icon" data-copy="${esc(p.url)}" title="Salin link preset" aria-label="Salin link preset">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             </button>
-            <button type="button" class="neo-btn btn-qr-preset" data-qr-idx="${idx}" title="Scan QR Code" aria-label="Scan QR Code">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="7" y1="7" x2="7.01" y2="7"/><line x1="17" y1="7" x2="17.01" y2="7"/><line x1="17" y1="17" x2="17.01" y2="17"/><line x1="7" y1="17" x2="7.01" y2="17"/></svg>
-              <span>QR</span>
-            </button>
           </div>
         </div>
       </div>
@@ -734,6 +688,7 @@ function renderResult(res) {
   renderVideoDetails(res);
   applyFilter("all");
 
+  if (landingShowcase) landingShowcase.classList.add("hidden");
   resultSection.classList.remove("hidden");
   resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
   showToast(`Berhasil menemukan ${allPresets.length} preset!`);
@@ -780,8 +735,8 @@ async function handleSearch(targetUrl) {
   progressCard.classList.remove("hidden");
   submitBtn.disabled = true;
   submitBtn.innerHTML = `
-    <svg class="spin-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-    <span class="btn-label">MEMINDAI PRESET...</span>
+    <svg class="spin-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+    <span class="btn-label">Memindai...</span>
   `;
   urlInput.disabled = true;
 
@@ -796,9 +751,8 @@ async function handleSearch(targetUrl) {
   } finally {
     submitBtn.disabled = false;
     submitBtn.innerHTML = `
-      <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
-      <span class="btn-label">CARI PRESET SEKARANG</span>
-      <kbd class="kbd-badge" aria-hidden="true">↵ ENTER</kbd>
+      <svg class="btn-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+      <span class="btn-label">Cari Preset</span>
     `;
     urlInput.disabled = false;
   }
@@ -964,41 +918,6 @@ presetsGrid.addEventListener("click", async (e) => {
     }
     return;
   }
-
-  const qrBtn = e.target.closest("[data-qr-idx]");
-  if (qrBtn) {
-    const idx = parseInt(qrBtn.dataset.qrIdx, 10);
-    const preset =
-      activeFilter === "all"
-        ? allPresets[idx]
-        : allPresets.filter((p) => (p.type || "").toLowerCase() === activeFilter)[idx];
-    if (preset) {
-      openQrModal(preset);
-    }
-  }
-});
-
-// QR Modal Copy button
-qrCopyBtn.addEventListener("click", async () => {
-  try {
-    await navigator.clipboard.writeText(qrUrlInput.value);
-    const original = qrCopyBtn.innerHTML;
-    qrCopyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-    qrCopyBtn.classList.add("btn-copied");
-    showToast("Link preset berhasil disalin!");
-    setTimeout(() => {
-      qrCopyBtn.innerHTML = original;
-      qrCopyBtn.classList.remove("btn-copied");
-    }, 1500);
-  } catch {
-    showToast("Gagal menyalin", "error");
-  }
-});
-
-// QR Modal Close Actions
-qrModalClose.addEventListener("click", closeQrModal);
-qrModal.addEventListener("click", (e) => {
-  if (e.target === qrModal) closeQrModal();
 });
 
 // WhatsApp Modal Actions
@@ -1031,7 +950,6 @@ if (waModalDontShow) {
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     hideSuggestions();
-    if (qrModal && !qrModal.classList.contains("hidden")) closeQrModal();
     if (waModal && !waModal.classList.contains("hidden")) closeWaModal();
   }
 });
