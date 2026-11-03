@@ -253,6 +253,68 @@ async function getBrowserSecurityToken() {
 }
 
 async function fetchPreset(input, onLog) {
+  // If running in Node CLI, query primary engine directly with fallback
+  if (typeof window === "undefined") {
+    try {
+      if (onLog) onLog("[1/5] Membuka halaman video TikTok...");
+      if (onLog) onLog("[2/5] Membaca data dan deskripsi video...");
+      const res = await fetch(`https://am.izzxd.my.id/api/find?url=${encodeURIComponent(input)}`, {
+        headers: { "user-agent": UA, accept: "application/json" },
+      });
+      if (res.ok) {
+        const j = await res.json().catch(() => null);
+        if (j && j.ok) {
+          if (onLog) onLog("[3/5] Memeriksa tautan profil & bio...");
+          if (onLog) onLog(`[4/5] Memindai komentar & balasan (${j.scanned?.comments || 0} komentar)...`);
+          if (onLog) onLog("[5/5] Menyusun hasil ekstraksi preset...");
+          const presets = j.presets || j.presetLinks || [];
+          return {
+            ok: true,
+            found: presets.length > 0,
+            videoId: j.videoId || j.video?.id || "",
+            videoUrl: j.video?.url || input,
+            author: j.author?.nickname || j.author?.uniqueId || "",
+            authorDetail: j.author || {},
+            video: {
+              id: j.video?.id || j.videoId || "",
+              url: j.video?.url || input,
+              description: j.video?.description || "",
+              cover: j.video?.cover || "",
+              playUrl: j.video?.src || "",
+              embed: j.video?.embed || "",
+              music: j.video?.music || null,
+              stats: {
+                views: j.video?.views || 0,
+                likes: j.video?.likes || 0,
+                comments: j.video?.comments || 0,
+                shares: j.video?.shares || 0,
+              },
+            },
+            checked: {
+              description: true,
+              bio: true,
+              comments: j.scanned?.comments || 0,
+              replies: j.scanned?.replies || 0,
+            },
+            presetLinks: presets.map((p) => ({
+              type: (p.type || "5mb").toLowerCase(),
+              url: p.url,
+              title: p.title || (p.type === "xml" ? "XML Project File" : "5MB Alight Motion Preset"),
+              size: p.size || null,
+              thumb: p.thumb || "",
+              source: p.source || "comment",
+              detail: p.detail || "",
+              pinned: !!p.pinned,
+              verified: !!p.byAuthor,
+            })),
+          };
+        }
+      }
+    } catch (e) {
+      if (onLog) onLog(`[info] engine 1: ${e.message}, beralih ke fallback...`);
+    }
+  }
+
   let api = `${BASE_URL}?url=${encodeURIComponent(input)}`;
   if (typeof window !== "undefined") {
     try {

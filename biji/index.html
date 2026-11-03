@@ -102,81 +102,183 @@
          MAIN INTERACTIVE WORKSPACE
          ========================================== -->
     <main class="main-content">
-      <!-- 1. SEARCH INPUT CARD -->
-      <section class="neo-card search-card cyber-card">
-        <div class="card-tag">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <!-- Search Mode Tabs -->
+      <div class="search-mode-tabs" role="tablist" aria-label="Mode Pencarian Preset">
+        <button type="button" class="mode-tab-btn active" id="tab-mode-url" data-mode="url" role="tab" aria-selected="true" aria-controls="panel-url">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
             <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
           </svg>
-          <span>INPUT URL TIKTOK</span>
+          <span>Link Video</span>
+        </button>
+        <button type="button" class="mode-tab-btn" id="tab-mode-search" data-mode="search" role="tab" aria-selected="false" aria-controls="panel-search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18V5l12-2v13"></path>
+            <circle cx="6" cy="18" r="3"></circle>
+            <circle cx="18" cy="16" r="3"></circle>
+          </svg>
+          <span>Cari Lagu // DJ Preset</span>
+        </button>
+      </div>
+
+      <!-- 1. SEARCH INPUT CARD -->
+      <section class="neo-card search-card cyber-card">
+        <!-- TAB PANEL 1: URL VIDEO -->
+        <div id="panel-url" class="search-panel-tab">
+          <div class="card-tag">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+            <span>INPUT URL TIKTOK // VIDEO LINK</span>
+          </div>
+          
+          <form id="form" class="search-form" autocomplete="off">
+            <div class="input-wrapper neo-box">
+              <span class="input-icon-decor" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="7"></circle>
+                  <path d="m20 20-3.6-3.6"></path>
+                </svg>
+              </span>
+              <input
+                id="url"
+                type="url"
+                name="url"
+                class="neo-input"
+                placeholder="https://vt.tiktok.com/ZS... atau https://www.tiktok.com/@user/video/..."
+                spellcheck="false"
+                autocapitalize="off"
+                autocorrect="off"
+                required
+              />
+              <button type="button" id="btn-paste" class="neo-btn btn-action-small" title="Tempel tautan dari clipboard">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="8" y="2" width="8" height="4" rx="1"></rect>
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                </svg>
+                <span>Paste</span>
+              </button>
+              <button type="button" id="btn-clear" class="neo-btn btn-action-icon hidden" title="Hapus input" aria-label="Hapus input">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+
+            <div class="form-actions">
+              <button id="submit" class="neo-btn btn-submit" type="submit">
+                <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="7"></circle>
+                  <path d="m20 20-3.6-3.6"></path>
+                </svg>
+                <span class="btn-label">CARI PRESET SEKARANG</span>
+                <kbd class="kbd-badge" aria-hidden="true">↵ ENTER</kbd>
+              </button>
+            </div>
+          </form>
+
+          <!-- Search History (Saved locally) -->
+          <div id="history-container" class="search-history hidden">
+            <div class="history-head">
+              <span class="history-label">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>RIWAYAT PENCARIAN TERAKHIR</span>
+              </span>
+              <button type="button" id="btn-clear-history" class="btn-text-danger">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                <span>Hapus Riwayat</span>
+              </button>
+            </div>
+            <div id="history-chips" class="history-chips"></div>
+          </div>
         </div>
-        
-        <form id="form" class="search-form" autocomplete="off">
-          <div class="input-wrapper neo-box">
-            <span class="input-icon-decor" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="7"></circle>
-                <path d="m20 20-3.6-3.6"></path>
-              </svg>
-            </span>
-            <input
-              id="url"
-              type="url"
-              name="url"
-              class="neo-input"
-              placeholder="https://vt.tiktok.com/ZS... atau https://www.tiktok.com/@user/video/..."
-              spellcheck="false"
-              autocapitalize="off"
-              autocorrect="off"
-              required
-            />
-            <button type="button" id="btn-paste" class="neo-btn btn-action-small" title="Tempel tautan dari clipboard">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="8" y="2" width="8" height="4" rx="1"></rect>
-                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-              </svg>
-              <span>Paste</span>
-            </button>
-            <button type="button" id="btn-clear" class="neo-btn btn-action-icon hidden" title="Hapus input" aria-label="Hapus input">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
+
+        <!-- TAB PANEL 2: CARI DARI LAGU / DJ -->
+        <div id="panel-search" class="search-panel-tab hidden">
+          <div class="card-tag">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18V5l12-2v13"></path>
+              <circle cx="6" cy="18" r="3"></circle>
+              <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+            <span>CARI DARI JUDUL LAGU // SOUND DJ</span>
           </div>
 
-          <div class="form-actions">
-            <button id="submit" class="neo-btn btn-submit" type="submit">
-              <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="7"></circle>
-                <path d="m20 20-3.6-3.6"></path>
-              </svg>
-              <span class="btn-label">CARI PRESET SEKARANG</span>
-              <kbd class="kbd-badge" aria-hidden="true">↵ ENTER</kbd>
-            </button>
-          </div>
-        </form>
+          <form id="search-query-form" class="search-form" autocomplete="off">
+            <div class="input-wrapper neo-box relative-wrap">
+              <span class="input-icon-decor" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 18V5l12-2v13"></path>
+                  <circle cx="6" cy="18" r="3"></circle>
+                  <circle cx="18" cy="16" r="3"></circle>
+                </svg>
+              </span>
+              <input
+                id="search-query-input"
+                type="text"
+                class="neo-input"
+                placeholder="Ketik judul lagu atau nama DJ (contoh: DJ Thai, DJ Haris Nugraha, Jedag Jedug)..."
+                spellcheck="false"
+                autocomplete="off"
+                required
+              />
+              <button type="button" id="btn-clear-query" class="neo-btn btn-action-icon hidden" title="Hapus query" aria-label="Hapus query">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
 
-        <!-- Search History (Saved locally) -->
-        <div id="history-container" class="search-history hidden">
-          <div class="history-head">
-            <span class="history-label">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-              <span>RIWAYAT PENCARIAN TERAKHIR</span>
-            </span>
-            <button type="button" id="btn-clear-history" class="btn-text-danger">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-              </svg>
-              <span>Hapus Riwayat</span>
-            </button>
+            <!-- Suggestions Dropdown -->
+            <div id="suggestions-box" class="suggestions-box hidden" role="listbox"></div>
+
+            <div class="search-query-controls">
+              <div class="platform-toggle-group">
+                <button type="button" class="plat-toggle-btn active" data-platform="tiktok">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                  <span>TikTok</span>
+                </button>
+                <button type="button" class="plat-toggle-btn" data-platform="youtube">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                  <span>YouTube</span>
+                </button>
+              </div>
+
+              <button id="btn-submit-search" class="neo-btn btn-submit" type="submit">
+                <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="7"></circle>
+                  <path d="m20 20-3.6-3.6"></path>
+                </svg>
+                <span id="btn-search-label">CARI PRESET LAGU // DJ</span>
+                <kbd class="kbd-badge">↵ ENTER</kbd>
+              </button>
+            </div>
+          </form>
+
+          <!-- Search Results Videos List -->
+          <div id="search-results-section" class="search-results-container hidden">
+            <div class="search-results-head">
+              <div class="search-results-title-group">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+                  <line x1="7" y1="2" x2="7" y2="22"></line>
+                  <line x1="17" y1="2" x2="17" y2="22"></line>
+                </svg>
+                <span id="search-results-count">0 Video Ditemukan</span>
+              </div>
+              <span class="search-results-tip">Klik salah satu video untuk mengekstrak presetnya</span>
+            </div>
+            <div id="search-results-list" class="search-results-grid"></div>
           </div>
-          <div id="history-chips" class="history-chips"></div>
         </div>
       </section>
 
@@ -300,6 +402,16 @@
 
       <!-- 4. RESULT SECTION (FOUND PRESETS) -->
       <section id="result-section" class="result-section hidden">
+        <div id="search-nav-bar" class="search-nav-bar hidden">
+          <button type="button" id="btn-back-to-search" class="neo-btn btn-back-search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Kembali ke Hasil Pencarian Video</span>
+          </button>
+        </div>
+
         <!-- Video & Creator Profile Card -->
         <div id="video-card" class="neo-card video-card cyber-card">
           <div class="card-tag">
@@ -421,6 +533,9 @@
                 </div>
                 <p id="video-caption" class="info-text"></p>
               </div>
+
+              <!-- DJ Soundtrack / Audio Box -->
+              <div id="music-box-container" class="music-box-container hidden"></div>
             </div>
           </div>
         </div>

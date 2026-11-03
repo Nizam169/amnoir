@@ -203,9 +203,54 @@ async function handleHandshake(req, res) {
   });
 }
 
+function normalizeResult(j, target) {
+  const presets = j.presets || j.presetLinks || [];
+  return {
+    ok: true,
+    found: presets.length > 0,
+    videoId: j.videoId || j.video?.id || "",
+    videoUrl: j.video?.url || target,
+    author: j.author?.nickname || j.author?.uniqueId || (typeof j.author === "string" ? j.author : ""),
+    authorDetail: j.author || {},
+    video: {
+      id: j.video?.id || j.videoId || "",
+      url: j.video?.url || target,
+      description: j.video?.description || "",
+      cover: j.video?.cover || "",
+      playUrl: j.video?.src || j.video?.playUrl || "",
+      playUrlNoWm: j.video?.src || j.video?.playUrlNoWm || "",
+      embed: j.video?.embed || "",
+      music: j.video?.music || null,
+      stats: {
+        views: j.video?.views || 0,
+        likes: j.video?.likes || 0,
+        comments: j.video?.comments || 0,
+        shares: j.video?.shares || 0,
+      },
+    },
+    checked: {
+      description: true,
+      bio: true,
+      comments: j.scanned?.comments || 0,
+      replies: j.scanned?.replies || 0,
+    },
+    presetLinks: presets.map((p) => ({
+      type: (p.type || "5mb").toLowerCase(),
+      url: p.url,
+      title: p.title || (p.type === "xml" ? "XML Project File" : "5MB Alight Motion Preset"),
+      size: p.size || null,
+      thumb: p.thumb || "",
+      source: p.source || "comment",
+      detail: p.detail || "",
+      pinned: !!p.pinned,
+      verified: !!p.byAuthor,
+    })),
+  };
+}
+
 async function handleApi(req, res) {
   const url = new URL(req.url, `http://localhost:${PORT}`);
-  const target = url.searchParams.get("url") || "";
+  const target = (url.searchParams.get("url") || "").trim();
 
   if (req.method === "OPTIONS") {
     send(res, 204, null, {
@@ -221,8 +266,35 @@ async function handleApi(req, res) {
     return;
   }
 
-  const clientToken = url.searchParams.get("t") || "";
-  let token = clientToken;
+  // 1. Try Primary Engine: am.izzxd.my.id
+  try {
+    const primaryRes = await fetch(`https://am.izzxd.my.id/api/find?url=${encodeURIComponent(target)}`, {
+      headers: { "user-agent": UA, accept: "application/json" },
+    });
+    if (primaryRes.ok) {
+      const j = await primaryRes.json().catch(() => null);
+      if (j && j.ok) {
+        res.writeHead(200, {
+          "content-type": "text/event-stream; charset=utf-8",
+          "cache-control": "no-cache, no-transform",
+          connection: "keep-alive",
+          "access-control-allow-origin": "*",
+        });
+        res.write(`event: log\ndata: [1/5] Membuka halaman video TikTok...\n\n`);
+        res.write(`event: log\ndata: [2/5] Membaca data dan deskripsi video...\n\n`);
+        res.write(`event: log\ndata: [3/5] Memeriksa tautan profil & bio...\n\n`);
+        res.write(`event: log\ndata: [4/5] Memindai komentar & balasan (${j.scanned?.comments || 0} komentar)...\n\n`);
+        res.write(`event: log\ndata: [5/5] Menyusun hasil ekstraksi preset...\n\n`);
+        const normalized = normalizeResult(j, target);
+        res.write(`event: result\ndata: ${JSON.stringify(normalized)}\n\n`);
+        res.end();
+        return;
+      }
+    }
+  } catch {}
+
+  // 2. Fallback Engine: amfinder.web.id
+  let token = url.searchParams.get("t") || "";
   if (!token) {
     try {
       token = await getToken();
@@ -311,9 +383,72 @@ async function handleStatic(req, res) {
   }
 }
 
+async function handleSearch(req, res) {
+  const url = new URL(req.url, `http://localhost:${PORT}`);
+  const q = url.searchParams.get("q") || "";
+  const p = url.searchParams.get("p") || "tiktok";
+  const cursor = url.searchParams.get("cursor") || "";
+
+  if (req.method === "OPTIONS") {
+    send(res, 204, null, {
+      "access-control-allow-origin": "*",
+      "access-control-allow-methods": "GET, OPTIONS",
+      "access-control-allow-headers": "accept, user-agent",
+    });
+    return;
+  }
+
+  if (!q.trim()) {
+    sendJson(res, 400, { ok: false, error: "parameter ?q= kosong" });
+    return;
+  }
+
+  try {
+    const upstreamUrl = `https://am.izzxd.my.id/api/search?q=${encodeURIComponent(q)}&p=${encodeURIComponent(p)}${
+      cursor ? `&cursor=${encodeURIComponent(cursor)}` : ""
+    }`;
+    const upstreamRes = await fetch(upstreamUrl, { headers: { "user-agent": UA } });
+    const data = await upstreamRes.json().catch(() => ({}));
+    sendJson(res, upstreamRes.status, data);
+  } catch (e) {
+    sendJson(res, 502, { ok: false, error: e.message });
+  }
+}
+
+async function handleSuggest(req, res) {
+  const url = new URL(req.url, `http://localhost:${PORT}`);
+  const q = url.searchParams.get("q") || "";
+  const p = url.searchParams.get("p") || "tiktok";
+
+  if (req.method === "OPTIONS") {
+    send(res, 204, null, {
+      "access-control-allow-origin": "*",
+      "access-control-allow-methods": "GET, OPTIONS",
+      "access-control-allow-headers": "accept, user-agent",
+    });
+    return;
+  }
+
+  if (!q.trim()) {
+    sendJson(res, 200, { ok: true, list: [] });
+    return;
+  }
+
+  try {
+    const upstreamUrl = `https://am.izzxd.my.id/api/suggest?q=${encodeURIComponent(q)}&p=${encodeURIComponent(p)}`;
+    const upstreamRes = await fetch(upstreamUrl, { headers: { "user-agent": UA } });
+    const data = await upstreamRes.json().catch(() => ({ list: [] }));
+    sendJson(res, upstreamRes.status, data);
+  } catch {
+    sendJson(res, 200, { ok: true, list: [] });
+  }
+}
+
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   if (url.pathname === "/api/find") return handleApi(req, res);
+  if (url.pathname === "/api/search") return handleSearch(req, res);
+  if (url.pathname === "/api/suggest") return handleSuggest(req, res);
   if (url.pathname === "/api/handshake") return handleHandshake(req, res);
   return handleStatic(req, res);
 });

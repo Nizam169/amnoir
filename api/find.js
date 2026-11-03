@@ -1,18 +1,19 @@
 /**
  * api/find.js — Vercel Edge Function
  *
- * Proxy SSE ke https://amfinder.web.id/api/find?url=...&t=...
- * Wajib runtime "edge" supaya streaming SSE tidak di-buffer/timeout 10s.
- * Otomatis menangani handshake security token upstream (PoW challenge).
+ * Dual-Engine Alight Motion Preset Scraper:
+ * 1. Primary Engine: https://am.izzxd.my.id/api/find (Fast, direct, accurate)
+ * 2. Fallback Engine: https://amfinder.web.id/api/find (with automatic token challenge solver)
  *
- * Response: text/event-stream (diteruskan apa adanya) atau JSON saat error.
+ * Emits real-time SSE event stream for pipeline steps & terminal console.
  */
 
 export const config = {
   runtime: "edge",
 };
 
-const BASE_URL = "https://amfinder.web.id";
+const BASE_FALLBACK = "https://amfinder.web.id";
+const PRIMARY_ENGINE = "https://am.izzxd.my.id/api/find";
 const UA =
   "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
 
@@ -52,13 +53,13 @@ let pendingTokenPromise = null;
 
 async function fetchSecurityToken() {
   const did = crypto.randomUUID();
-  const step1Res = await fetch(`${BASE_URL}/api/v/7f91a2e4`, {
+  const step1Res = await fetch(`${BASE_FALLBACK}/api/v/7f91a2e4`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
       "user-agent": UA,
-      origin: BASE_URL,
-      referer: `${BASE_URL}/`,
+      origin: BASE_FALLBACK,
+      referer: `${BASE_FALLBACK}/`,
     },
     body: JSON.stringify({ did }),
   });
@@ -107,13 +108,13 @@ async function fetchSecurityToken() {
   }
   const proof = toHex(data);
 
-  const step2Res = await fetch(`${BASE_URL}/api/v/7f91a2e4`, {
+  const step2Res = await fetch(`${BASE_FALLBACK}/api/v/7f91a2e4`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
       "user-agent": UA,
-      origin: BASE_URL,
-      referer: `${BASE_URL}/`,
+      origin: BASE_FALLBACK,
+      referer: `${BASE_FALLBACK}/`,
     },
     body: JSON.stringify({
       cid,
@@ -149,9 +150,54 @@ async function getToken() {
   return pendingTokenPromise;
 }
 
+function normalizeResult(j, target) {
+  const presets = j.presets || j.presetLinks || [];
+  return {
+    ok: true,
+    found: presets.length > 0,
+    videoId: j.videoId || j.video?.id || "",
+    videoUrl: j.video?.url || target,
+    author: j.author?.nickname || j.author?.uniqueId || (typeof j.author === "string" ? j.author : ""),
+    authorDetail: j.author || {},
+    video: {
+      id: j.video?.id || j.videoId || "",
+      url: j.video?.url || target,
+      description: j.video?.description || "",
+      cover: j.video?.cover || "",
+      playUrl: j.video?.src || j.video?.playUrl || "",
+      playUrlNoWm: j.video?.src || j.video?.playUrlNoWm || "",
+      embed: j.video?.embed || "",
+      music: j.video?.music || null,
+      stats: {
+        views: j.video?.views || 0,
+        likes: j.video?.likes || 0,
+        comments: j.video?.comments || 0,
+        shares: j.video?.shares || 0,
+      },
+    },
+    checked: {
+      description: true,
+      bio: true,
+      comments: j.scanned?.comments || 0,
+      replies: j.scanned?.replies || 0,
+    },
+    presetLinks: presets.map((p) => ({
+      type: (p.type || "5mb").toLowerCase(),
+      url: p.url,
+      title: p.title || (p.type === "xml" ? "XML Project File" : "5MB Alight Motion Preset"),
+      size: p.size || null,
+      thumb: p.thumb || "",
+      source: p.source || "comment",
+      detail: p.detail || "",
+      pinned: !!p.pinned,
+      verified: !!p.byAuthor,
+    })),
+  };
+}
+
 export default async function handler(req) {
   const url = new URL(req.url);
-  const target = url.searchParams.get("url") || "";
+  const target = (url.searchParams.get("url") || "").trim();
 
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: CORS });
@@ -161,57 +207,96 @@ export default async function handler(req) {
     return json({ ok: false, error: "parameter ?url= kosong. Contoh: /api/find?url=https://vt.tiktok.com/xxx" }, 400);
   }
 
-  const clientToken = url.searchParams.get("t") || "";
-  let token = clientToken;
-  if (!token) {
-    try {
-      token = await getToken();
-    } catch (e) {
-      return json({ ok: false, error: `gagal verifikasi keamanan scraper (${e.message})` }, 502);
-    }
-  }
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    async start(controller) {
+      function sendEvent(event, data) {
+        const payload = typeof data === "string" ? data : JSON.stringify(data);
+        controller.enqueue(encoder.encode(`event: ${event}\ndata: ${payload}\n\n`));
+      }
 
-  let upstream;
-  try {
-    upstream = await fetch(`${BASE_URL}/api/find?url=${encodeURIComponent(target)}&t=${encodeURIComponent(token)}`, {
-      headers: {
-        accept: "text/event-stream",
-        "user-agent": UA,
-        referer: `${BASE_URL}/`,
-      },
-    });
+      try {
+        sendEvent("log", "[1/5] Membuka halaman video TikTok...");
 
-    // Jika token kedaluwarsa atau ditolak 403, coba refresh token 1 kali
-    if (upstream.status === 403) {
-      cachedToken = null;
-      token = await fetchSecurityToken();
-      upstream = await fetch(`${BASE_URL}/api/find?url=${encodeURIComponent(target)}&t=${encodeURIComponent(token)}`, {
-        headers: {
-          accept: "text/event-stream",
-          "user-agent": UA,
-          referer: `${BASE_URL}/`,
-        },
-      });
-    }
-  } catch (e) {
-    return json({ ok: false, error: `tidak bisa menghubungi server scraper (${e.message})` }, 502);
-  }
+        // ==========================================
+        // 1. PRIMARY ENGINE: am.izzxd.my.id
+        // ==========================================
+        let resolved = null;
+        try {
+          sendEvent("log", "[2/5] Membaca data dan deskripsi video...");
+          const primaryRes = await fetch(`${PRIMARY_ENGINE}?url=${encodeURIComponent(target)}`, {
+            headers: {
+              "user-agent": UA,
+              accept: "application/json",
+            },
+          });
 
-  // error biasa (link tidak valid dll) -> JSON, teruskan apa adanya
-  if (!upstream.ok || !upstream.body) {
-    const text = await upstream.text().catch(() => "");
-    let msg = `HTTP ${upstream.status}`;
-    try {
-      const j = JSON.parse(text);
-      if (j && j.ok === false) msg = j.error || msg;
-    } catch {
-      /* bukan JSON */
-    }
-    return json({ ok: false, error: msg }, upstream.status || 502);
-  }
+          if (primaryRes.ok) {
+            const j = await primaryRes.json().catch(() => null);
+            if (j && j.ok) {
+              sendEvent("log", "[3/5] Memeriksa tautan profil & bio...");
+              sendEvent("log", `[4/5] Memindai komentar & balasan (${j.scanned?.comments || 0} komentar)...`);
+              sendEvent("log", "[5/5] Menyusun hasil ekstraksi preset...");
+              resolved = normalizeResult(j, target);
+            }
+          }
+        } catch (e) {
+          sendEvent("log", `[info] engine 1: ${e.message}, beralih ke engine cadangan...`);
+        }
 
-  // teruskan SSE stream ke klien
-  return new Response(upstream.body, {
+        // ==========================================
+        // 2. FALLBACK ENGINE: amfinder.web.id (SSE)
+        // ==========================================
+        if (!resolved) {
+          sendEvent("log", "[info] Mengaktifkan engine scraper sekunder...");
+          let token = url.searchParams.get("t") || "";
+          if (!token) {
+            try {
+              token = await getToken();
+            } catch (e) {
+              sendEvent("log", `[!] handshake failed: ${e.message}`);
+            }
+          }
+
+          try {
+            const fallbackRes = await fetch(`${BASE_FALLBACK}/api/find?url=${encodeURIComponent(target)}&t=${encodeURIComponent(token)}`, {
+              headers: {
+                accept: "text/event-stream",
+                "user-agent": UA,
+                referer: `${BASE_FALLBACK}/`,
+              },
+            });
+
+            if (fallbackRes.ok && fallbackRes.body) {
+              const reader = fallbackRes.body.getReader();
+              const decoder = new TextDecoder();
+              while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                controller.enqueue(value);
+              }
+              controller.close();
+              return;
+            }
+          } catch (e) {
+            sendEvent("log", `[!] fallback engine error: ${e.message}`);
+          }
+        }
+
+        if (resolved) {
+          sendEvent("result", resolved);
+        } else {
+          sendEvent("result", { ok: false, error: "Tidak ada preset yang ditemukan di video ini atau video tidak dapat diakses." });
+        }
+      } catch (err) {
+        sendEvent("result", { ok: false, error: err.message || "Terjadi kesalahan sistem saat memproses video." });
+      } finally {
+        controller.close();
+      }
+    },
+  });
+
+  return new Response(stream, {
     status: 200,
     headers: {
       ...CORS,
