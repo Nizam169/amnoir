@@ -1,6 +1,6 @@
 /**
- * AMNOIR NEON — Main Web Application Logic
- * Supports dual modes: Direct Link Resolver & Song / DJ Keyword Finder
+ * AMNOIR — Main Web Application Logic
+ * Dual-Mode: Direct Video Link & Song/DJ Search
  */
 
 import { fetchPreset } from "./amfinder.js";
@@ -39,12 +39,10 @@ const searchNavBar = $("#search-nav-bar");
 const btnBackToSearch = $("#btn-back-to-search");
 const platToggleBtns = $$(".plat-toggle-btn");
 
-// Progress & Terminal Elements
+// Status & Progress Elements
 const progressCard = $("#progress-card");
-const progressTrack = $("#progress-track");
-const progressLabel = $("#progress-label");
-const stepsTrackLine = $("#steps-track-line");
-const logList = $("#log-list");
+const progressTitle = $("#progress-title");
+const progressDesc = $("#progress-desc");
 
 // Result Sections
 const errorCard = $("#error-card");
@@ -78,22 +76,20 @@ const count5mb = $("#count-5mb");
 const countXml = $("#count-xml");
 const presetsGrid = $("#presets-grid");
 
-// Toast & WA Modal Elements
+// WA Modal Elements
 const toastContainer = $("#toast-container");
-
 const waModal = $("#wa-modal");
 const waModalClose = $("#wa-modal-close");
 const waModalLater = $("#wa-modal-later");
 const waModalDontShow = $("#wa-modal-dont-show");
 const btnOpenWaModal = $("#btn-open-wa-modal");
-const floatingWaBtn = $("#floating-wa-btn");
 
 const WA_DISMISS_KEY = "amnoir:wa_popup_disabled";
-const HISTORY_KEY = "amnoir3d:search_history";
+const HISTORY_KEY = "amnoir:search_history";
 
 // Application State
-let activeMode = "url"; // "url" | "search"
-let selectedPlatform = "tiktok"; // "tiktok" | "youtube"
+let activeMode = "url";
+let selectedPlatform = "tiktok";
 let allPresets = [];
 let activeFilter = "all";
 let searchItems = [];
@@ -113,7 +109,7 @@ function esc(str) {
 }
 
 /**
- * Formats big numbers (e.g. 1.2M, 45.6K or Indonesian 1.2 jt / 45.6 rb)
+ * Formats big numbers (e.g. 1.2M, 45.6K)
  */
 function fmtNum(n) {
   if (typeof n !== "number" || !isFinite(n)) return "0";
@@ -123,23 +119,23 @@ function fmtNum(n) {
 }
 
 /**
- * Shows a Cyber Neon Toast Notification
+ * Shows a Toast Notification
  */
 function showToast(message, type = "success") {
   const toast = document.createElement("div");
   toast.className = `neo-toast toast-${type}`;
   const iconSvg = type === "error"
-    ? `<svg class="toast-svg-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`
-    : `<svg class="toast-svg-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
+    ? `<svg class="toast-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`
+    : `<svg class="toast-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
   toast.innerHTML = `${iconSvg}<span>${esc(message)}</span>`;
   toastContainer.appendChild(toast);
 
   setTimeout(() => {
-    toast.style.transition = "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)";
-    toast.style.transform = "translateY(16px)";
+    toast.style.transition = "all 0.2s ease";
+    toast.style.transform = "translateY(12px)";
     toast.style.opacity = "0";
-    setTimeout(() => toast.remove(), 250);
-  }, 2400);
+    setTimeout(() => toast.remove(), 200);
+  }, 2200);
 }
 
 /**
@@ -170,80 +166,30 @@ function switchMode(mode) {
  * Reset all UI views to clean state
  */
 function resetUI() {
-  errorCard.classList.add("hidden");
-  emptyCard.classList.add("hidden");
-  resultSection.classList.add("hidden");
-  progressCard.classList.add("hidden");
+  if (errorCard) errorCard.classList.add("hidden");
+  if (emptyCard) emptyCard.classList.add("hidden");
+  if (resultSection) resultSection.classList.add("hidden");
+  if (progressCard) progressCard.classList.add("hidden");
   if (landingShowcase) landingShowcase.classList.remove("hidden");
 
-  logList.innerHTML = "";
-  presetsGrid.innerHTML = "";
-  videoMediaContainer.innerHTML = "";
+  if (presetsGrid) presetsGrid.innerHTML = "";
+  if (videoMediaContainer) videoMediaContainer.innerHTML = "";
   if (musicBoxContainer) musicBoxContainer.innerHTML = "";
-
-  progressTrack.style.width = "0%";
-  progressLabel.textContent = "Menghubungkan...";
-
-  if (stepsTrackLine) stepsTrackLine.style.setProperty("--track-pct", "0%");
-
-  // Reset step blocks
-  for (let i = 1; i <= 5; i++) {
-    const el = $(`#step-${i}`);
-    if (el) {
-      el.classList.remove("is-active", "is-done");
-    }
-  }
+  if (progressTitle) progressTitle.textContent = "Memeriksa video...";
+  if (progressDesc) progressDesc.textContent = "Deskripsi, bio akun, serta komentar sedang dipindai.";
 }
 
 /**
- * Highlights a step block and updates the progress track
- */
-function updateStep(stepNum, totalSteps = 5) {
-  const pct = Math.min(100, Math.round((stepNum / totalSteps) * 100));
-  progressTrack.style.width = `${pct}%`;
-  progressLabel.textContent = `Langkah ${stepNum}/${totalSteps} (${pct}%)`;
-
-  if (stepsTrackLine) {
-    const linePct = Math.max(0, Math.min(100, Math.round(((stepNum - 1) / (totalSteps - 1)) * 100)));
-    stepsTrackLine.style.setProperty("--track-pct", `${linePct}%`);
-  }
-
-  for (let i = 1; i <= totalSteps; i++) {
-    const el = $(`#step-${i}`);
-    if (!el) continue;
-    if (i < stepNum) {
-      el.classList.remove("is-active");
-      el.classList.add("is-done");
-    } else if (i === stepNum) {
-      el.classList.add("is-active");
-      el.classList.remove("is-done");
-    } else {
-      el.classList.remove("is-active", "is-done");
-    }
-  }
-}
-
-/**
- * Appends an incoming log line to the live terminal
+ * Real-time SSE Log updater
  */
 function addTerminalLog(msg) {
-  progressCard.classList.remove("hidden");
-  const li = document.createElement("li");
-
-  // Check if log contains step marker e.g. [1/5]
-  const match = msg.match(/^\[(\d+)\/(\d+)\]/);
+  if (progressCard) progressCard.classList.remove("hidden");
+  const match = msg.match(/^\[(\d+)\/(\d+)\]\s*(.*)$/);
   if (match) {
-    li.className = "step-log";
-    li.innerHTML = `<b>${esc(msg)}</b>`;
-    const cur = parseInt(match[1], 10);
-    const tot = parseInt(match[2], 10);
-    updateStep(cur, tot);
+    if (progressTitle) progressTitle.textContent = match[3] || msg;
   } else {
-    li.textContent = `> ${msg}`;
+    if (progressDesc) progressDesc.textContent = msg;
   }
-
-  logList.appendChild(li);
-  logList.scrollTop = logList.scrollHeight;
 }
 
 /**
@@ -262,7 +208,7 @@ function saveHistory(url) {
   if (!url) return;
   let list = loadHistory().filter((item) => item !== url);
   list.unshift(url);
-  list = list.slice(0, 8); // keep max 8
+  list = list.slice(0, 6);
   try {
     localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
   } catch {}
@@ -282,7 +228,7 @@ function renderHistory() {
   history.forEach((url) => {
     const chip = document.createElement("button");
     chip.type = "button";
-    chip.className = "neo-chip chip-history";
+    chip.className = "hist-chip";
     chip.title = url;
     chip.textContent = url.replace(/^https?:\/\/(www\.)?/, "");
     chip.addEventListener("click", () => {
@@ -297,7 +243,7 @@ function renderHistory() {
 function clearAllHistory() {
   localStorage.removeItem(HISTORY_KEY);
   renderHistory();
-  showToast("Riwayat pencarian telah dibersihkan");
+  showToast("Riwayat dibersihkan");
 }
 
 /**
@@ -357,12 +303,12 @@ async function executeSongSearch(query) {
     const res = await fetch(`/api/search?q=${encodeURIComponent(q)}&p=${selectedPlatform}`);
     const data = await res.json().catch(() => ({}));
     if (!data.ok || !Array.isArray(data.items)) {
-      throw new Error(data.error || "Gagal memuat hasil pencarian video.");
+      throw new Error(data.error || "Gagal memuat hasil pencarian.");
     }
 
     searchItems = data.items;
     renderSearchResults(searchItems, q);
-    showToast(`${searchItems.length} video ditemukan untuk "${q}"!`);
+    showToast(`${searchItems.length} video ditemukan`);
   } catch (err) {
     showToast(err.message || "Gagal mencari video.", "error");
   } finally {
@@ -372,16 +318,15 @@ async function executeSongSearch(query) {
 }
 
 /**
- * Render Video Search Results (DJ list style)
+ * Render Video Search Results Grid
  */
 function renderSearchResults(items, query) {
   if (!items.length) {
     searchResultsSection.classList.remove("hidden");
     searchResultsCount.textContent = "0 Video Ditemukan";
     searchResultsList.innerHTML = `
-      <div class="empty-search-state">
-        <p>Tidak ada video preset yang ditemukan untuk kata kunci <b>"${esc(query)}"</b>.</p>
-        <span class="dim-hint">Coba cari judul lagu atau nama DJ lainnya (misal: DJ Thai, DJ Haris Nugraha, Jedag Jedug).</span>
+      <div style="grid-column: 1 / -1; padding: 24px 0; text-align: center; color: var(--text-dim);">
+        <p>Tidak ada video yang cocok untuk "<b>${esc(query)}</b>".</p>
       </div>
     `;
     searchResultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -394,27 +339,20 @@ function renderSearchResults(items, query) {
       const thumb = item.thumb || "";
       const dur = item.duration || "";
       const title = item.title || item.music?.title || "Preset Alight Motion";
-      const author = item.author ? `@${item.author}` : "TikTok Creator";
+      const author = item.author ? `@${item.author}` : "";
       const views = typeof item.views === "number" ? fmtNum(item.views) + " views" : item.views || "";
 
       return `
       <article class="search-video-item" data-idx="${idx}" tabindex="0" role="button" aria-label="Pilih video ${esc(title)}">
         <div class="search-video-thumb">
-          ${thumb ? `<img src="${esc(thumb)}" alt="${esc(title)}" loading="lazy" />` : `<div class="thumb-ph"><span>AM</span></div>`}
+          ${thumb ? `<img src="${esc(thumb)}" alt="${esc(title)}" loading="lazy" />` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-dim);font-size:11px;">AM</div>`}
           ${dur ? `<span class="duration-badge">${esc(dur)}</span>` : ""}
         </div>
         <div class="search-video-info">
           <h4 class="search-video-title" title="${esc(title)}">${esc(title)}</h4>
-          <span class="search-video-author">${esc(author)}</span>
-          <div class="search-video-meta">
-            ${views ? `<span class="meta-views">${esc(views)}</span>` : ""}
-            <span class="meta-dot">·</span>
-            <span class="meta-platform">${esc(item.platform || selectedPlatform)}</span>
-          </div>
+          ${author ? `<span class="search-video-author">${esc(author)}</span>` : ""}
+          ${views ? `<span class="search-video-meta">${esc(views)}</span>` : ""}
         </div>
-        <span class="search-video-action" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-        </span>
       </article>
     `;
     })
@@ -447,14 +385,14 @@ function closeWaModal() {
 }
 
 /**
- * Video Details Renderer
+ * Video Details Renderer (Clean, bounded, no overflow)
  */
 function renderVideoDetails(result) {
   const v = result.video || {};
   const a = result.authorDetail || {};
   const directUrl = result.videoUrl || v.url || `https://www.tiktok.com/@${result.author || ""}`;
 
-  // Video or Cover preview
+  // Video Preview
   const playUrl = v.playUrlNoWm || v.playUrl;
   if (playUrl) {
     videoMediaContainer.innerHTML = `
@@ -472,18 +410,22 @@ function renderVideoDetails(result) {
     videoMediaContainer.innerHTML = `
       <img src="${esc(v.cover)}" alt="Video Cover" loading="lazy" />
     `;
+  } else if (v.embed) {
+    videoMediaContainer.innerHTML = `
+      <iframe src="${esc(v.embed)}" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+    `;
   } else {
     videoMediaContainer.innerHTML = `
-      <div class="preset-thumb-fallback"><span>NO PREVIEW</span></div>
+      <div style="padding: 24px; text-align: center; color: var(--text-dim); font-size: 12px;">NO PREVIEW</div>
     `;
   }
 
   // Author details
   if (a.avatar) {
-    authorAvatarWrap.innerHTML = `<img src="${esc(a.avatar)}" alt="Avatar" class="avatar-img" loading="lazy" />`;
+    authorAvatarWrap.innerHTML = `<img src="${esc(a.avatar)}" alt="Avatar" loading="lazy" />`;
   } else {
     const initial = (a.nickname || result.author || "A").charAt(0).toUpperCase();
-    authorAvatarWrap.innerHTML = `<div class="avatar-initial">${esc(initial)}</div>`;
+    authorAvatarWrap.innerHTML = `<span class="avatar-initial">${esc(initial)}</span>`;
   }
 
   authorNickname.textContent = a.nickname || result.author || "TikTok Creator";
@@ -506,22 +448,22 @@ function renderVideoDetails(result) {
     videoCaptionWrap.classList.add("hidden");
   }
 
-  // DJ Music Soundtrack Bar
+  // DJ Soundtrack Box
   const m = v.music || null;
   if (m && m.title && musicBoxContainer) {
     musicBoxContainer.innerHTML = `
-      <div class="dj-sound-bar neo-box">
+      <div class="dj-sound-bar">
         <div class="dj-sound-cover"${m.cover ? ` style="background-image:url('${esc(m.cover)}')"` : ""}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
         </div>
         <div class="dj-sound-info">
-          <span class="dj-sound-tag">DJ SOUNDTRACK // AUDIO</span>
+          <span class="dj-sound-tag">SOUND AUDIO</span>
           <b class="dj-sound-title" title="${esc(m.title)}">${esc(m.title)}</b>
           <span class="dj-sound-author">${esc(m.author || "")}</span>
         </div>
         ${
           m.url
-            ? `<a class="neo-btn btn-sound-open" href="${esc(m.url)}" target="_blank" rel="noopener noreferrer" title="Buka tautan audio"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Putar Audio</span></a>`
+            ? `<a class="btn-sound-open" href="${esc(m.url)}" target="_blank" rel="noopener noreferrer">Buka Audio</a>`
             : ""
         }
       </div>
@@ -540,21 +482,21 @@ function renderVideoDetails(result) {
 }
 
 /**
- * Preset Cards Grid Renderer (DJ-inspired clean horizontal cards)
+ * Preset Cards Grid Renderer (DJ Web Style)
  */
 function renderPresetCards(links) {
   presetsGrid.innerHTML = "";
 
   if (!links.length) {
     presetsGrid.innerHTML = `
-      <div class="neo-card empty-card" style="grid-column: 1 / -1; padding: 24px;">
-        <p><b>Tidak ada preset untuk kategori ini.</b></p>
+      <div class="status-card" style="justify-content: center;">
+        <p class="status-sub">Tidak ada preset untuk kategori ini.</p>
       </div>
     `;
     return;
   }
 
-  links.forEach((p, idx) => {
+  links.forEach((p) => {
     const type = (p.type || "5mb").toLowerCase();
     const is5mb = type === "5mb";
     const typeLabel = is5mb ? "5MB" : "XML";
@@ -567,8 +509,8 @@ function renderPresetCards(links) {
       <div class="preset-thumb-holder">
         ${
           thumb
-            ? `<img src="${esc(thumb)}" alt="${esc(p.title || "Preset")}" class="preset-thumb-img" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'preset-thumb-fallback\\'><span>${esc(type.toUpperCase())}</span></div>'" />`
-            : `<div class="preset-thumb-fallback"><span>${esc(type.toUpperCase())}</span></div>`
+            ? `<img src="${esc(thumb)}" alt="${esc(p.title || "Preset")}" class="preset-thumb-img" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'preset-thumb-fallback\\'>${esc(type.toUpperCase())}</span>'" />`
+            : `<span class="preset-thumb-fallback">${esc(type.toUpperCase())}</span>`
         }
       </div>
 
@@ -578,27 +520,25 @@ function renderPresetCards(links) {
           
           <div class="preset-badges-row">
             <span class="badge-type-pill ${badgeClass}">${typeLabel}</span>
-            ${p.size ? `<span class="badge-type-pill badge-size">${esc(p.size)}</span>` : ""}
-            ${p.verified ? `<span class="badge-type-pill badge-author"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Dari Pemilik Video</span>` : ""}
-            ${p.pinned ? `<span class="badge-type-pill badge-pinned"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.89A2 2 0 0 1 15 10.77V6a3 3 0 0 0-6 0v4.77a2 2 0 0 1-1.11 1.79l-1.78.89A2 2 0 0 0 5 15.24Z"/></svg>Dipin</span>` : ""}
+            ${p.size ? `<span class="badge-type-pill badge-author">${esc(p.size)}</span>` : ""}
+            ${p.verified ? `<span class="badge-type-pill badge-author">Dari Pemilik</span>` : ""}
+            ${p.pinned ? `<span class="badge-type-pill badge-pinned">Dipin</span>` : ""}
           </div>
         </div>
 
         <div class="preset-source-info">
-          <span class="source-info-text">${p.detail ? esc(p.detail) + " · " : ""}${esc(p.source === "comment" ? "Dari komentar video" : p.source === "bioLink" ? "Dari link di bio" : p.source === "description" ? "Dari deskripsi" : "Dari " + (p.source || "TikTok"))}</span>
+          <span class="source-info-text">${p.detail ? esc(p.detail) + " · " : ""}${esc(p.source === "comment" ? "Dari komentar" : p.source === "bioLink" ? "Dari link di bio" : p.source === "description" ? "Dari deskripsi" : "Dari " + (p.source || "TikTok"))}</span>
           <span class="preset-url-mono">${esc(p.url)}</span>
         </div>
 
         <div class="preset-card-actions">
-          <a class="neo-btn btn-open-preset" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">
-            <span>${is5mb ? "BUKA PRESET" : "AMBIL FILE XML"}</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          <a class="btn-open-preset" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">
+            <span>${is5mb ? "Buka Preset" : "Ambil File XML"}</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </a>
-          <div class="preset-sub-actions">
-            <button type="button" class="neo-btn btn-copy-preset btn-action-icon" data-copy="${esc(p.url)}" title="Salin link preset" aria-label="Salin link preset">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            </button>
-          </div>
+          <button type="button" class="btn-action-icon" data-copy="${esc(p.url)}" title="Salin link preset" aria-label="Salin link preset">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
         </div>
       </div>
     `;
@@ -612,7 +552,7 @@ function renderPresetCards(links) {
  */
 function applyFilter(filter) {
   activeFilter = filter;
-  $$(".filter-chip").forEach((chip) => {
+  $$(".filter-pills .chip").forEach((chip) => {
     chip.classList.toggle("active", chip.dataset.filter === filter);
   });
 
@@ -632,16 +572,8 @@ function renderResult(res) {
     return;
   }
 
+  if (progressCard) progressCard.classList.add("hidden");
   allPresets = Array.isArray(res.presetLinks) ? res.presetLinks : [];
-
-  // Update step status to completed
-  for (let i = 1; i <= 5; i++) {
-    const el = $(`#step-${i}`);
-    if (el) el.classList.add("is-done");
-  }
-  progressTrack.style.width = "100%";
-  progressLabel.textContent = "Selesai (100%)";
-  if (stepsTrackLine) stepsTrackLine.style.setProperty("--track-pct", "100%");
 
   // Check if search originated from video search items
   if (searchItems.length && searchNavBar) {
@@ -652,7 +584,7 @@ function renderResult(res) {
 
   // Check if no presets were found
   if (!allPresets.length) {
-    totalPresetCount.textContent = "0 PRESET DITEMUKAN";
+    totalPresetCount.textContent = "0 PRESET";
     countAll.textContent = 0;
     count5mb.textContent = 0;
     countXml.textContent = 0;
@@ -662,9 +594,10 @@ function renderResult(res) {
     presetsGrid.innerHTML = "";
     emptyCard.classList.remove("hidden");
 
+    if (landingShowcase) landingShowcase.classList.add("hidden");
     resultSection.classList.remove("hidden");
     resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    showToast("Video ditemukan, tapi tidak ada preset di video ini");
+    showToast("Tidak ada link preset di video ini");
     return;
   }
 
@@ -683,7 +616,7 @@ function renderResult(res) {
   countAll.textContent = allPresets.length;
   count5mb.textContent = count5;
   countXml.textContent = countX;
-  totalPresetCount.textContent = `${allPresets.length} PRESET DITEMUKAN`;
+  totalPresetCount.textContent = `${allPresets.length} PRESET`;
 
   renderVideoDetails(res);
   applyFilter("all");
@@ -691,14 +624,14 @@ function renderResult(res) {
   if (landingShowcase) landingShowcase.classList.add("hidden");
   resultSection.classList.remove("hidden");
   resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
-  showToast(`Berhasil menemukan ${allPresets.length} preset!`);
+  showToast(`${allPresets.length} preset ditemukan!`);
 
-  // Auto trigger WhatsApp channel popup after 2s if not dismissed in session
+  // Auto trigger WhatsApp channel popup after 2.5s if not dismissed in session
   if (!sessionStorage.getItem("amnoir:wa_popup_shown")) {
     setTimeout(() => {
       openWaModal();
       sessionStorage.setItem("amnoir:wa_popup_shown", "true");
-    }, 2000);
+    }, 2500);
   }
 }
 
@@ -723,10 +656,10 @@ async function handleSearch(targetUrl) {
     return;
   }
 
-  // Basic TikTok / video validation
+  // Validation
   if (!(/tiktok\.com|youtube\.com|youtu\.be|instagram\.com/i.test(url) || /^\d{15,}$/.test(url))) {
     showError(
-      "Link harus merupakan URL video TikTok / YouTube yang valid (contoh: https://vt.tiktok.com/xxx atau https://www.tiktok.com/@user/video/...)"
+      "Link harus merupakan URL video TikTok atau YouTube yang valid."
     );
     return;
   }
@@ -735,7 +668,6 @@ async function handleSearch(targetUrl) {
   progressCard.classList.remove("hidden");
   submitBtn.disabled = true;
   submitBtn.innerHTML = `
-    <svg class="spin-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
     <span class="btn-label">Memindai...</span>
   `;
   urlInput.disabled = true;
@@ -751,8 +683,11 @@ async function handleSearch(targetUrl) {
   } finally {
     submitBtn.disabled = false;
     submitBtn.innerHTML = `
-      <svg class="btn-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
       <span class="btn-label">Cari Preset</span>
+      <svg class="arr-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14"></path>
+        <path d="m12 5 7 7-7 7"></path>
+      </svg>
     `;
     urlInput.disabled = false;
   }
@@ -816,11 +751,11 @@ pasteBtn.addEventListener("click", async () => {
     if (text) {
       urlInput.value = text.trim();
       updateClearBtn();
-      showToast("Tautan ditempel dari clipboard!");
+      showToast("Tautan ditempel!");
     }
   } catch {
     urlInput.focus();
-    showToast("Gunakan Ctrl+V / Tempel manual", "error");
+    showToast("Tempel manual link video", "error");
   }
 });
 
@@ -866,7 +801,7 @@ suggestionsBox.addEventListener("click", (e) => {
 });
 
 document.addEventListener("click", (e) => {
-  if (!e.target.closest(".relative-wrap") && !e.target.closest("#suggestions-box")) {
+  if (!e.target.closest(".fld-relative") && !e.target.closest("#suggestions-box")) {
     hideSuggestions();
   }
 });
@@ -893,12 +828,12 @@ if (btnBackToSearch) {
 
 // Filter Tab Click Events
 filterTabs.addEventListener("click", (e) => {
-  const chip = e.target.closest(".filter-chip");
-  if (!chip) return;
+  const chip = e.target.closest(".chip");
+  if (!chip || !chip.dataset.filter) return;
   applyFilter(chip.dataset.filter);
 });
 
-// Preset Grid Delegated Actions (Copy Link & QR Code)
+// Copy link action button
 presetsGrid.addEventListener("click", async (e) => {
   const copyBtn = e.target.closest("[data-copy]");
   if (copyBtn) {
@@ -908,7 +843,7 @@ presetsGrid.addEventListener("click", async (e) => {
       const original = copyBtn.innerHTML;
       copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
       copyBtn.classList.add("btn-copied");
-      showToast("Link preset berhasil disalin!");
+      showToast("Link preset disalin!");
       setTimeout(() => {
         copyBtn.innerHTML = original;
         copyBtn.classList.remove("btn-copied");
@@ -939,10 +874,10 @@ if (waModalDontShow) {
   waModalDontShow.addEventListener("change", (e) => {
     if (e.target.checked) {
       localStorage.setItem(WA_DISMISS_KEY, "true");
-      showToast("Popup otomatis dinonaktifkan");
+      showToast("Popup dinonaktifkan");
     } else {
       localStorage.removeItem(WA_DISMISS_KEY);
-      showToast("Popup otomatis diaktifkan kembali");
+      showToast("Popup diaktifkan");
     }
   });
 }
@@ -960,7 +895,6 @@ document.addEventListener("DOMContentLoaded", () => {
   updateClearBtn();
   updateQueryClearBtn();
 
-  // Show WA Channel popup on first page visit after 3.5s
   if (!localStorage.getItem("amnoir:wa_visit_seen")) {
     setTimeout(() => {
       openWaModal();

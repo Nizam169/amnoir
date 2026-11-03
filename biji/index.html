@@ -2,207 +2,152 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AMNOIR — Cari Preset Alight Motion (5MB & XML)</title>
-  <meta name="description" content="Pencari dan scraper preset Alight Motion (5MB Cloud & XML File) otomatis dari link video TikTok atau judul lagu DJ dengan tema Cyber Monochrome." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>AMNOIR — Cari Preset Alight Motion (5MB &amp; XML)</title>
+  <meta name="description" content="Pencari dan scraper preset Alight Motion 5MB Cloud dan XML otomatis dari video TikTok, YouTube, atau judul lagu DJ viral." />
   
-  <!-- Favicon Monochrome Neon -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='92' height='92' x='4' y='4' rx='18' fill='%23040406' stroke='%23FFFFFF' stroke-width='6'/%3E%3Cpath d='M26 72 L50 24 L74 72 L58 72 L50 52 L42 72 Z' fill='%23FFFFFF'/%3E%3C/svg%3E" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230a0a0a'/%3E%3Ccircle cx='29' cy='29' r='13' fill='none' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M39 39l13 13' stroke='%23fff' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />
   
-  <!-- Premium Fonts: Plus Jakarta Sans, Space Grotesk & JetBrains Mono -->
+  <!-- Premium Fonts: Geist & Geist Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" />
   
   <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Ambient Spotlight FX -->
-  <div class="ambient-spotlight" aria-hidden="true"></div>
+  <!-- ==========================================
+       TOP NAVBAR
+       ========================================== -->
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand-link" href="/" aria-label="AMNOIR Home">
+        <span class="brand-logo-mark">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </span>
+        <span class="brand-title">AM<b>NOIR</b></span>
+      </a>
+
+      <div class="header-actions">
+        <button type="button" id="btn-open-wa-modal" class="pill-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          <span>Saluran WA</span>
+        </button>
+      </div>
+    </div>
+  </header>
 
   <!-- ==========================================
-       TOP MONOCHROME TICKER BANNER
+       MAIN VIEWPORT
        ========================================== -->
-  <div class="ticker-wrap" aria-hidden="true">
-    <div class="ticker-move">
-      <span class="ticker-item"><span class="ticker-dot"></span><b>AMNOIR // NEON</b></span>
-      <span class="ticker-item"><span class="ticker-dot"></span>ALIGHT MOTION PRESET SCRAPER</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>PRESET 5MB CLOUD &amp; XML PROJECTS</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>SCAN DESKRIPSI + BIO + KOMENTAR</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>CARI DARI LINK ATAU JUDUL LAGU</span>
-      <span class="ticker-item"><span class="ticker-dot"></span><b>AMNOIR // NEON</b></span>
-      <span class="ticker-item"><span class="ticker-dot"></span>ALIGHT MOTION PRESET SCRAPER</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>PRESET 5MB CLOUD &amp; XML PROJECTS</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>SCAN DESKRIPSI + BIO + KOMENTAR</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>CARI DARI LINK ATAU JUDUL LAGU</span>
-    </div>
-  </div>
-
-  <div class="page-container">
-    <!-- ==========================================
-         SITE HEADER & HERO SECTION
-         ========================================== -->
-    <header class="neo-header">
-      <div class="brand-row">
-        <div class="brand-logo neo-box">
-          <span class="logo-mark">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-              <polyline points="2 17 12 22 22 17"></polyline>
-              <polyline points="2 12 12 17 22 12"></polyline>
-            </svg>
-          </span>
-          <span class="logo-text">AM<b>NOIR</b></span>
-          <span class="badge-ver">NEON</span>
-        </div>
-
-        <div class="header-badges">
-          <button type="button" id="btn-open-wa-modal" class="neo-pill pill-wa">
-            <svg class="pill-svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-            <span>Saluran WA</span>
-          </button>
-          <span class="neo-pill pill-live">
-            <span class="dot-pulse"></span>
-            <span>AUTO SCANNER</span>
-          </span>
-          <span class="neo-pill pill-feature">
-            <span>5MB &amp; XML</span>
-          </span>
-        </div>
-      </div>
-
-      <div class="hero-text-block">
-        <div class="sys-status-badge">
-          <span class="status-ping"></span>
-          <span class="status-code">ONLINE</span>
-          <span class="status-divider">//</span>
-          <span class="status-desc">PRESET SCRAPER ENGINE</span>
-        </div>
-        <h1 class="hero-title">TEMUKAN PRESET <span class="neon-highlight">ALIGHT MOTION</span> DENGAN MUDAH</h1>
-        <p class="hero-subtitle">
-          Cari preset Alight Motion dari link video TikTok / YouTube atau ketik judul lagu DJ. Sistem otomatis memindai deskripsi, bio akun, dan komentar untuk mengekstrak preset <b>5MB Cloud</b> &amp; <b>XML File</b>.
+  <main>
+    <!-- HERO / TITLE -->
+    <section class="hero-section">
+      <div class="wrap">
+        <span class="eyebrow">PRESET FINDER</span>
+        <h1 class="page-title">Cari link preset Alight Motion</h1>
+        <p class="lead-text">
+          Tempel link video TikTok atau ketik judul lagunya. Deskripsi, bio akun, serta komentar dicek otomatis.
         </p>
       </div>
-    </header>
+    </section>
 
-    <!-- ==========================================
-         MAIN INTERACTIVE WORKSPACE
-         ========================================== -->
-    <main class="main-content">
-      <!-- Search Mode Tabs (Dual Engine) -->
-      <div class="search-mode-tabs" role="tablist" aria-label="Mode Pencarian Preset">
-        <button type="button" class="mode-tab-btn active" id="tab-mode-url" data-mode="url" role="tab" aria-selected="true" aria-controls="panel-url">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-          </svg>
-          <span>Link Video</span>
-        </button>
-        <button type="button" class="mode-tab-btn" id="tab-mode-search" data-mode="search" role="tab" aria-selected="false" aria-controls="panel-search">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="7"></circle>
-            <path d="m20 20-3.6-3.6"></path>
-          </svg>
-          <span>Cari Preset</span>
-        </button>
-      </div>
-
-      <!-- 1. SEARCH INPUT CARD -->
-      <section class="neo-card search-card cyber-card">
-        <!-- TAB PANEL 1: URL VIDEO -->
-        <div id="panel-url" class="search-panel-tab">
-          <div class="card-tag">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <!-- SEARCH CONSOLE -->
+    <section class="search-section">
+      <div class="wrap">
+        <!-- Segmented Mode Tabs -->
+        <div class="tab-switcher" role="tablist" aria-label="Pilih Mode Pencarian">
+          <button type="button" class="tab-item active" id="tab-mode-url" data-mode="url" role="tab" aria-selected="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
               <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
             </svg>
-            <span>INPUT URL VIDEO TIKTOK // YOUTUBE</span>
-          </div>
-          
-          <form id="form" class="search-form" autocomplete="off">
-            <div class="input-wrapper neo-box">
-              <span class="input-icon-decor" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="11" cy="11" r="7"></circle>
-                  <path d="m20 20-3.6-3.6"></path>
+            <span>Link Video</span>
+          </button>
+          <button type="button" class="tab-item" id="tab-mode-search" data-mode="search" role="tab" aria-selected="false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-3.6-3.6"></path>
+            </svg>
+            <span>Cari Preset</span>
+          </button>
+        </div>
+
+        <!-- PANEL 1: LINK VIDEO -->
+        <div id="panel-url" class="panel-content">
+          <form id="form" class="search-row-form" autocomplete="off">
+            <div class="input-field" id="field-url">
+              <span class="field-icon" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                 </svg>
               </span>
               <input
                 id="url"
                 type="url"
                 name="url"
-                class="neo-input"
-                placeholder="https://vt.tiktok.com/ZS... atau link video TikTok..."
+                placeholder="https://vt.tiktok.com/ZS... atau link video TikTok"
                 spellcheck="false"
-                autocapitalize="off"
-                autocorrect="off"
+                autocomplete="off"
                 required
               />
-              <button type="button" id="btn-paste" class="neo-btn btn-action-small" title="Tempel tautan dari clipboard">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <button type="button" id="btn-paste" class="icon-btn" title="Tempel dari clipboard" aria-label="Tempel link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="8" y="2" width="8" height="4" rx="1"></rect>
                   <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
                 </svg>
-                <span>Paste</span>
               </button>
-              <button type="button" id="btn-clear" class="neo-btn btn-action-icon hidden" title="Hapus input" aria-label="Hapus input">
+              <button type="button" id="btn-clear" class="icon-btn hidden" title="Hapus input" aria-label="Hapus input">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
                   <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
               </button>
             </div>
-
-            <div class="form-actions">
-              <button id="submit" class="neo-btn btn-submit" type="submit">
-                <svg class="btn-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="11" cy="11" r="7"></circle>
-                  <path d="m20 20-3.6-3.6"></path>
-                </svg>
-                <span class="btn-label">Cari Preset</span>
-              </button>
-            </div>
+            <button id="submit" class="btn primary" type="submit">
+              <span class="btn-label">Cari Preset</span>
+              <svg class="arr-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </button>
           </form>
+          <p class="field-hint">Mendukung link video TikTok dan YouTube Shorts.</p>
 
-          <!-- Search History (Saved locally) -->
-          <div id="history-container" class="search-history hidden">
-            <div class="history-head">
-              <span class="history-label">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
-                <span>RIWAYAT PENCARIAN TERAKHIR</span>
-              </span>
-              <button type="button" id="btn-clear-history" class="btn-text-danger">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
-                <span>Hapus Riwayat</span>
-              </button>
-            </div>
+          <!-- History -->
+          <div id="history-container" class="history-strip hidden">
+            <span class="history-label">Riwayat:</span>
             <div id="history-chips" class="history-chips"></div>
+            <button type="button" id="btn-clear-history" class="text-btn">Hapus</button>
           </div>
         </div>
 
-        <!-- TAB PANEL 2: CARI DARI LAGU / DJ -->
-        <div id="panel-search" class="search-panel-tab hidden">
-          <div class="card-tag">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="7"></circle>
-              <path d="m20 20-3.6-3.6"></path>
-            </svg>
-            <span>CARI PRESET DARI JUDUL LAGU // DJ</span>
+        <!-- PANEL 2: CARI PRESET (SONG / DJ) -->
+        <div id="panel-search" class="panel-content hidden">
+          <div class="plat-bar">
+            <button type="button" class="plat-toggle-btn active" data-platform="tiktok">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+              <span>TikTok</span>
+            </button>
+            <button type="button" class="plat-toggle-btn" data-platform="youtube">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              <span>YouTube</span>
+            </button>
           </div>
 
-          <form id="search-query-form" class="search-form" autocomplete="off">
-            <div class="input-wrapper neo-box relative-wrap">
-              <span class="input-icon-decor" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <form id="search-query-form" class="search-row-form" autocomplete="off">
+            <div class="input-field fld-relative" id="field-query">
+              <span class="field-icon" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M9 18V5l12-2v13"></path>
                   <circle cx="6" cy="18" r="3"></circle>
                   <circle cx="18" cy="16" r="3"></circle>
@@ -211,619 +156,335 @@
               <input
                 id="search-query-input"
                 type="text"
-                class="neo-input"
-                placeholder="Ketik judul lagu atau DJ (misal: DJ Thai, DJ Haris Nugraha, Jedag Jedug)..."
+                placeholder="Ketik judul lagu atau DJ (misal: DJ Thai, DJ Haris, Jedag Jedug)..."
                 spellcheck="false"
                 autocomplete="off"
                 required
               />
-              <button type="button" id="btn-clear-query" class="neo-btn btn-action-icon hidden" title="Hapus query" aria-label="Hapus query">
+              <button type="button" id="btn-clear-query" class="icon-btn hidden" title="Hapus query" aria-label="Hapus query">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
                   <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
               </button>
+              <div id="suggestions-box" class="suggestions-dropdown hidden" role="listbox"></div>
             </div>
 
-            <!-- Suggestions Dropdown -->
-            <div id="suggestions-box" class="suggestions-box hidden" role="listbox"></div>
-
-            <div class="search-query-controls">
-              <div class="platform-toggle-group">
-                <button type="button" class="plat-toggle-btn active" data-platform="tiktok">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-                  <span>TikTok</span>
-                </button>
-                <button type="button" class="plat-toggle-btn" data-platform="youtube">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                  <span>YouTube</span>
-                </button>
-              </div>
-
-              <button id="btn-submit-search" class="neo-btn btn-submit" type="submit">
-                <svg class="btn-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="11" cy="11" r="7"></circle>
-                  <path d="m20 20-3.6-3.6"></path>
-                </svg>
-                <span id="btn-search-label">Cari Preset</span>
-              </button>
-            </div>
+            <button id="btn-submit-search" class="btn primary" type="submit">
+              <span id="btn-search-label">Cari Preset</span>
+              <svg class="arr-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </button>
           </form>
+          <p class="field-hint">Ketik judul lagunya, kata "preset" otomatis ditambahkan.</p>
 
           <!-- Search Results Videos List -->
-          <div id="search-results-section" class="search-results-container hidden">
-            <div class="search-results-head">
-              <div class="search-results-title-group">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
-                  <line x1="7" y1="2" x2="7" y2="22"></line>
-                  <line x1="17" y1="2" x2="17" y2="22"></line>
-                </svg>
-                <span id="search-results-count">0 Video Ditemukan</span>
+          <div id="search-results-section" class="search-results-box hidden">
+            <div class="sec-header">
+              <h2 id="search-results-count" class="sec-title">0 Video Ditemukan</h2>
+              <span class="sec-note">Pilih video untuk mengekstrak presetnya</span>
+            </div>
+            <div id="search-results-list" class="video-cards-grid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATUS & OUTPUT CONTAINER -->
+    <section class="output-section">
+      <div class="wrap">
+        <!-- Live Loading Status -->
+        <div id="progress-card" class="status-card hidden" aria-live="polite">
+          <div class="status-spinner"></div>
+          <div class="status-text-wrap">
+            <h3 id="progress-title" class="status-head">Memeriksa video...</h3>
+            <p id="progress-desc" class="status-sub">Deskripsi, bio akun, serta komentar sedang dipindai.</p>
+          </div>
+        </div>
+
+        <!-- Error Card -->
+        <div id="error-card" class="status-card status-error hidden" role="alert">
+          <div class="status-icon-err">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <div class="status-text-wrap">
+            <h3 class="status-head">Pencarian Terhenti</h3>
+            <p id="error-msg" class="status-sub"></p>
+          </div>
+        </div>
+
+        <!-- RESULT SECTION -->
+        <div id="result-section" class="result-container hidden">
+          <!-- Back to search navigation -->
+          <div id="search-nav-bar" class="search-nav-bar hidden">
+            <button type="button" id="btn-back-to-search" class="btn small">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5"></path>
+                <path d="m12 19-7-7 7-7"></path>
+              </svg>
+              <span>Kembali ke Hasil Video</span>
+            </button>
+          </div>
+
+          <!-- Video & Creator Profile Section -->
+          <div class="sec-header">
+            <h2 class="sec-title">Informasi Video</h2>
+          </div>
+
+          <div id="video-card" class="video-card-box">
+            <div class="video-layout">
+              <!-- Left: Video Player -->
+              <div class="video-player-wrap" id="video-media-container"></div>
+
+              <!-- Right: Video Info -->
+              <div class="video-meta-wrap">
+                <div class="creator-bar">
+                  <div id="author-avatar-wrap" class="creator-avatar"></div>
+                  <div class="creator-info">
+                    <b id="author-nickname" class="creator-name">-</b>
+                    <span id="author-uid" class="creator-handle">@username</span>
+                  </div>
+                  <a id="tiktok-direct-link" href="#" target="_blank" rel="noopener noreferrer" class="btn mini">
+                    <span>Buka Video</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                  </a>
+                </div>
+
+                <!-- Stats 4-Grid -->
+                <div class="stats-grid">
+                  <div class="stat-pill">
+                    <small>VIEWS</small>
+                    <b id="stat-views">0</b>
+                  </div>
+                  <div class="stat-pill">
+                    <small>LIKES</small>
+                    <b id="stat-likes">0</b>
+                  </div>
+                  <div class="stat-pill">
+                    <small>KOMENTAR</small>
+                    <b id="stat-comments">0</b>
+                  </div>
+                  <div class="stat-pill">
+                    <small>SHARES</small>
+                    <b id="stat-shares">0</b>
+                  </div>
+                </div>
+
+                <!-- Bio -->
+                <div id="author-bio-wrap" class="desc-box hidden">
+                  <small class="box-lbl">BIO AKUN</small>
+                  <p id="author-bio" class="box-text"></p>
+                </div>
+
+                <!-- Caption -->
+                <div id="video-caption-wrap" class="desc-box hidden">
+                  <small class="box-lbl">DESKRIPSI</small>
+                  <p id="video-caption" class="box-text"></p>
+                </div>
+
+                <!-- DJ Sound Bar -->
+                <div id="music-box-container" class="music-box hidden"></div>
               </div>
-              <span class="search-results-tip">Pilih video di bawah untuk ekstrak preset</span>
-            </div>
-            <div id="search-results-list" class="search-results-grid"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==========================================
-           2. LANDING PAGE SHOWCASE & FITUR
-           ========================================== -->
-      <section id="landing-showcase" class="landing-showcase">
-        <!-- Feature Highlights Strip -->
-        <div class="landing-features-grid">
-          <div class="feature-card neo-box">
-            <div class="feature-icon-wrap">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-              </svg>
-            </div>
-            <div class="feature-body">
-              <h3 class="feature-title">Ekstraksi dari Link Video</h3>
-              <p class="feature-desc">Tempel tautan TikTok atau YouTube Shorts. Sistem memindai hingga ratusan komentar &amp; balasan.</p>
             </div>
           </div>
 
-          <div class="feature-card neo-box">
-            <div class="feature-icon-wrap">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 18V5l12-2v13"></path>
-                <circle cx="6" cy="18" r="3"></circle>
-                <circle cx="18" cy="16" r="3"></circle>
-              </svg>
+          <!-- Empty Preset State -->
+          <div id="empty-card" class="status-card status-empty hidden">
+            <h3 class="status-head">Tidak Ada Preset di Video Ini</h3>
+            <p id="empty-desc" class="status-sub">
+              Deskripsi, bio akun, serta komentar video ini sudah diperiksa, tetapi tidak ditemukan tautan preset Alight Motion. Silakan coba video lainnya.
+            </p>
+          </div>
+
+          <!-- Preset List Header & Filters -->
+          <div id="filter-header-row" class="sec-header filter-row">
+            <div class="title-with-badge">
+              <h2 class="sec-title">Link Preset</h2>
+              <span id="total-preset-count" class="chip count-chip">0 PRESET</span>
             </div>
-            <div class="feature-body">
-              <h3 class="feature-title">Cari Lewat Judul Lagu &amp; DJ</h3>
-              <p class="feature-desc">Ketik nama sound DJ atau judul lagu. Pilih video yang pas dan ekstrak presetnya secara instan.</p>
+
+            <div id="filter-tabs" class="filter-pills">
+              <button type="button" class="chip active" data-filter="all">Semua <span id="count-all">0</span></button>
+              <button type="button" class="chip" data-filter="5mb">5MB Cloud <span id="count-5mb">0</span></button>
+              <button type="button" class="chip" data-filter="xml">XML File <span id="count-xml">0</span></button>
             </div>
           </div>
 
-          <div class="feature-card neo-box">
-            <div class="feature-icon-wrap">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                <polyline points="2 17 12 22 22 17"></polyline>
-                <polyline points="2 12 12 17 22 12"></polyline>
-              </svg>
-            </div>
-            <div class="feature-body">
-              <h3 class="feature-title">Dukungan 5MB &amp; File XML</h3>
-              <p class="feature-desc">Mendeteksi tautan cloud Alight Creative resmi maupun file XML Google Drive tanpa batasan.</p>
-            </div>
-          </div>
+          <!-- Presets Grid -->
+          <div id="presets-grid" class="preset-items-list"></div>
         </div>
 
-        <!-- How It Works Section -->
-        <div class="how-it-works-box neo-box">
-          <div class="section-title-wrap">
-            <span class="step-badge">PANDUAN</span>
-            <h2 class="sub-heading">Cara Cepat Menemukan Preset</h2>
-          </div>
-
-          <div class="steps-flow-grid">
-            <div class="flow-step-item">
-              <div class="flow-num">01</div>
-              <h4 class="flow-step-title">Masukkan Input</h4>
-              <p class="flow-step-desc">Tempel link video atau ketik judul lagu DJ pada kolom pencarian.</p>
-            </div>
-            <div class="flow-step-item">
-              <div class="flow-num">02</div>
-              <h4 class="flow-step-title">Engine Memindai</h4>
-              <p class="flow-step-desc">Deskripsi, tautan bio, hingga ratusan komentar diperiksa otomatis.</p>
-            </div>
-            <div class="flow-step-item">
-              <div class="flow-num">03</div>
-              <h4 class="flow-step-title">Ambil Preset</h4>
-              <p class="flow-step-desc">Klik buka preset langsung ke Alight Motion atau salin linknya.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- FAQ Section -->
-        <div class="faq-box neo-box">
-          <div class="section-title-wrap">
-            <span class="step-badge">FAQ</span>
-            <h2 class="sub-heading">Pertanyaan Umum</h2>
-          </div>
-
-          <div class="faq-grid">
-            <div class="faq-item">
-              <b class="faq-q">Apakah web ini gratis?</b>
-              <p class="faq-a">Ya, 100% gratis, tanpa login akun, dan tanpa iklan yang mengganggu.</p>
-            </div>
-            <div class="faq-item">
-              <b class="faq-q">Apa bedanya Preset 5MB dan XML?</b>
-              <p class="faq-a">Preset 5MB adalah tautan cloud Alight Creative resmi. XML adalah file project yang dapat diimpor langsung ke aplikasi.</p>
-            </div>
-            <div class="faq-item">
-              <b class="faq-q">Kenapa ada video tanpa preset?</b>
-              <p class="faq-a">Sebagian kreator tidak menaruh link preset di komentar atau bio. Coba gunakan tab Cari Preset untuk menemukan video lain.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 3. LIVE PROGRESS & TERMINAL CARD -->
-      <section id="progress-card" class="neo-card progress-card cyber-card hidden" aria-live="polite">
-        <div class="card-tag">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="4 17 10 11 4 5"></polyline>
-            <line x1="12" y1="19" x2="20" y2="19"></line>
-          </svg>
-          <span>SCANNING PIPELINE // PROSES</span>
-        </div>
-        
-        <!-- 5-Step Visual Pipeline -->
-        <div class="steps-grid-wrapper">
-          <div class="steps-track-line" id="steps-track-line" aria-hidden="true"></div>
-          <div class="steps-grid">
-            <div class="step-block" id="step-1">
-              <div class="step-node-halo"></div>
-              <span class="step-num">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <!-- ==========================================
+             LANDING PAGE SHOWCASE (VISIBLE ON IDLE)
+             ========================================== -->
+        <div id="landing-showcase" class="landing-showcase">
+          <!-- 3 Feature Cards -->
+          <div class="feature-trio">
+            <div class="feature-item">
+              <div class="feat-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                   <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                 </svg>
-              </span>
-              <span class="step-code">01</span>
-              <span class="step-txt">Resolve</span>
+              </div>
+              <h3 class="feat-title">Cari dari Link Video</h3>
+              <p class="feat-desc">Tempel link TikTok atau YouTube Shorts. Deskripsi, bio kreator, hingga komentar dipindai otomatis.</p>
             </div>
-            <div class="step-block" id="step-2">
-              <div class="step-node-halo"></div>
-              <span class="step-num">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="2" y="4" width="20" height="16" rx="2.18"></rect>
-                  <path d="m22 7-6 5 6 5V7z"></path>
+
+            <div class="feature-item">
+              <div class="feat-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 18V5l12-2v13"></path>
+                  <circle cx="6" cy="18" r="3"></circle>
+                  <circle cx="18" cy="16" r="3"></circle>
                 </svg>
-              </span>
-              <span class="step-code">02</span>
-              <span class="step-txt">Metadata</span>
+              </div>
+              <h3 class="feat-title">Cari dari Judul Lagu</h3>
+              <p class="feat-desc">Ketik nama sound DJ atau judul lagu. Pilih video yang cocok dan ekstrak presetnya secara instan.</p>
             </div>
-            <div class="step-block" id="step-3">
-              <div class="step-node-halo"></div>
-              <span class="step-num">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="7" r="4"></circle>
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+
+            <div class="feature-item">
+              <div class="feat-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                  <polyline points="2 17 12 22 22 17"></polyline>
+                  <polyline points="2 12 12 17 22 12"></polyline>
                 </svg>
-              </span>
-              <span class="step-code">03</span>
-              <span class="step-txt">Bio Link</span>
-            </div>
-            <div class="step-block" id="step-4">
-              <div class="step-node-halo"></div>
-              <span class="step-num">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                </svg>
-              </span>
-              <span class="step-code">04</span>
-              <span class="step-txt">Komentar</span>
-            </div>
-            <div class="step-block" id="step-5">
-              <div class="step-node-halo"></div>
-              <span class="step-num">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="7 10 12 15 17 10"></polyline>
-                  <line x1="12" y1="15" x2="12" y2="3"></line>
-                </svg>
-              </span>
-              <span class="step-code">05</span>
-              <span class="step-txt">Preset</span>
+              </div>
+              <h3 class="feat-title">Preset 5MB &amp; File XML</h3>
+              <p class="feat-desc">Mengekstrak preset Alight Motion 5MB Cloud maupun file XML Google Drive yang siap diimpor.</p>
             </div>
           </div>
-        </div>
 
-        <!-- Neon Progress Bar -->
-        <div class="progress-bar-container neo-box">
-          <div class="progress-track" id="progress-track"></div>
-          <span class="progress-status-badge" id="progress-label">Menghubungkan...</span>
-        </div>
+          <!-- Cara Pakai -->
+          <div class="showcase-card">
+            <span class="eyebrow">PANDUAN</span>
+            <h2 class="card-head">Cara Cepat Mencari Preset</h2>
 
-        <!-- Monochrome Terminal Console -->
-        <div class="terminal-box neo-box">
-          <div class="terminal-head">
-            <div class="term-dots">
-              <span class="dot"></span>
-              <span class="dot"></span>
-              <span class="dot"></span>
+            <div class="steps-grid">
+              <div class="step-card">
+                <span class="step-idx">01</span>
+                <h4 class="step-title">Masukkan Link atau Lagu</h4>
+                <p class="step-desc">Tempel tautan video TikTok atau ketik judul lagu DJ yang kamu cari.</p>
+              </div>
+              <div class="step-card">
+                <span class="step-idx">02</span>
+                <h4 class="step-title">Sistem Memindai</h4>
+                <p class="step-desc">Deskripsi, tautan di bio akun, dan komentar video dicek satu-satu.</p>
+              </div>
+              <div class="step-card">
+                <span class="step-idx">03</span>
+                <h4 class="step-title">Gunakan Preset</h4>
+                <p class="step-desc">Buka preset langsung ke aplikasi Alight Motion atau salin tautannya.</p>
+              </div>
             </div>
-            <div class="term-title-wrapper">
-              <span class="term-title">terminal.log</span>
-              <span class="term-divider">—</span>
-              <span class="term-sub">stream reader</span>
-            </div>
-            <span class="term-live-tag">
-              <span class="dot-pulse"></span>
-              <span>LIVE</span>
-            </span>
           </div>
-          <ul id="log-list" class="log-list"></ul>
-        </div>
-      </section>
 
-      <!-- 4. ERROR CARD STATE -->
-      <div id="error-card" class="neo-card error-card cyber-card hidden" role="alert">
-        <div class="card-tag">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
-            <line x1="12" y1="8" x2="12" y2="12"></line>
-            <line x1="12" y1="16" x2="12.01" y2="16"></line>
-          </svg>
-          <span>PENCARIAN GAGAL</span>
-        </div>
-        <div class="error-body">
-          <div class="error-content">
-            <h3 class="error-title">Proses Terhenti</h3>
-            <p id="error-msg" class="error-msg"></p>
+          <!-- FAQ -->
+          <div class="showcase-card">
+            <span class="eyebrow">FAQ</span>
+            <h2 class="card-head">Pertanyaan yang Sering Muncul</h2>
+
+            <div class="faq-list">
+              <div class="faq-row">
+                <b class="faq-q">Apakah web ini gratis?</b>
+                <p class="faq-a">Ya, gratis tanpa akun, tanpa login, dan tanpa iklan yang mengganggu.</p>
+              </div>
+              <div class="faq-row">
+                <b class="faq-q">Apa beda Preset 5MB Cloud dan XML?</b>
+                <p class="faq-a">Preset 5MB adalah link resmi Alight Creative yang langsung membuka aplikasi. XML adalah file project yang bisa diimpor manual.</p>
+              </div>
+              <div class="faq-row">
+                <b class="faq-q">Kenapa ada video yang presetnya tidak ditemukan?</b>
+                <p class="faq-a">Kreator video mungkin tidak menyertakan link preset di bio atau komentar. Coba gunakan tab Cari Preset untuk mencoba video lain.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <!-- 5. RESULT SECTION (FOUND PRESETS) -->
-      <section id="result-section" class="result-section hidden">
-        <div id="search-nav-bar" class="search-nav-bar hidden">
-          <button type="button" id="btn-back-to-search" class="neo-btn btn-back-search">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="19" y1="12" x2="5" y2="12"></line>
-              <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
-            <span>Kembali ke Hasil Pencarian Video</span>
-          </button>
-        </div>
-
-        <!-- Video & Creator Profile Card -->
-        <div id="video-card" class="neo-card video-card cyber-card">
-          <div class="card-tag">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="4" width="20" height="16" rx="2.18"></rect>
-              <path d="m22 7-6 5 6 5V7z"></path>
-            </svg>
-            <span>INFORMASI VIDEO &amp; KREATOR</span>
-          </div>
-          
-          <div class="video-content-layout">
-            <!-- Left: Media Preview (Strictly bounded container) -->
-            <div class="video-media-col">
-              <div class="video-media-wrap neo-box" id="video-media-container"></div>
-              <span class="media-hint">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                </svg>
-                <span>Video Preview</span>
-              </span>
-            </div>
-
-            <!-- Right: Author, Stats, Bio, Description Details -->
-            <div class="video-details-col">
-              <!-- Creator Profile Bar -->
-              <div class="creator-profile-bar neo-box">
-                <div id="author-avatar-wrap" class="avatar-wrap neo-box"></div>
-                <div class="creator-names">
-                  <div class="creator-nick-row">
-                    <h2 id="author-nickname" class="creator-nick">-</h2>
-                    <span class="badge-creator">CREATOR</span>
-                  </div>
-                  <span id="author-uid" class="creator-handle">@username</span>
-                </div>
-                <a id="tiktok-direct-link" href="#" target="_blank" rel="noopener noreferrer" class="neo-btn btn-tiktok-out">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
-                  </svg>
-                  <span>Buka Video</span>
-                </a>
-              </div>
-
-              <!-- Stats Counters Grid -->
-              <div class="stats-3d-grid">
-                <div class="stat-card neo-box stat-views">
-                  <div class="stat-icon-wrap">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
-                      <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                  </div>
-                  <div class="stat-val-group">
-                    <span class="stat-val" id="stat-views">0</span>
-                    <span class="stat-lbl">VIEWS</span>
-                  </div>
-                </div>
-                <div class="stat-card neo-box stat-likes">
-                  <div class="stat-icon-wrap">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
-                    </svg>
-                  </div>
-                  <div class="stat-val-group">
-                    <span class="stat-val" id="stat-likes">0</span>
-                    <span class="stat-lbl">LIKES</span>
-                  </div>
-                </div>
-                <div class="stat-card neo-box stat-comments">
-                  <div class="stat-icon-wrap">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </div>
-                  <div class="stat-val-group">
-                    <span class="stat-val" id="stat-comments">0</span>
-                    <span class="stat-lbl">KOMENTAR</span>
-                  </div>
-                </div>
-                <div class="stat-card neo-box stat-shares">
-                  <div class="stat-icon-wrap">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="18" cy="5" r="3"></circle>
-                      <circle cx="6" cy="12" r="3"></circle>
-                      <circle cx="18" cy="19" r="3"></circle>
-                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                    </svg>
-                  </div>
-                  <div class="stat-val-group">
-                    <span class="stat-val" id="stat-shares">0</span>
-                    <span class="stat-lbl">SHARES</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Creator Bio Box -->
-              <div id="author-bio-wrap" class="info-section-box neo-box hidden">
-                <div class="info-section-head">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="7" r="4"></circle>
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  </svg>
-                  <span class="info-label">BIO KREATOR</span>
-                </div>
-                <p id="author-bio" class="info-text"></p>
-              </div>
-
-              <!-- Caption / Video Description -->
-              <div id="video-caption-wrap" class="info-section-box neo-box hidden">
-                <div class="info-section-head">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
-                  </svg>
-                  <span class="info-label">DESKRIPSI VIDEO</span>
-                </div>
-                <p id="video-caption" class="info-text"></p>
-              </div>
-
-              <!-- DJ Soundtrack / Audio Box -->
-              <div id="music-box-container" class="music-box-container hidden"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Empty Preset State (video found, but no preset) -->
-        <div id="empty-card" class="neo-card empty-card cyber-card hidden">
-          <div class="card-tag">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              <line x1="8" y1="11" x2="14" y2="11"></line>
-            </svg>
-            <span>PRESET TIDAK DITEMUKAN</span>
-          </div>
-          <div class="empty-body">
-            <h3>Tidak Ada Preset di Video Ini</h3>
-            <p id="empty-desc" class="muted">
-              Informasi video &amp; kreator tetap ditampilkan di atas. Scraper telah memeriksa deskripsi, bio akun, tautan link-in-bio, serta seluruh komentar &amp; balasan. Pastikan video memiliki tautan preset Alight Motion atau coba video TikTok lainnya.
-            </p>
-          </div>
-        </div>
-
-        <!-- Filter Category Tabs Header -->
-        <div id="filter-header-row" class="filter-header-row">
-          <div class="filter-title-group">
-            <h2 class="section-heading">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                <polyline points="2 17 12 22 22 17"></polyline>
-                <polyline points="2 12 12 17 22 12"></polyline>
-              </svg>
-              <span>DAFTAR PRESET DITEMUKAN</span>
-            </h2>
-            <span class="found-counter-badge" id="total-preset-count">0 PRESET</span>
-          </div>
-
-          <div id="filter-tabs" class="filter-tabs">
-            <button type="button" class="neo-chip filter-chip active" data-filter="all">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="7" height="7"></rect>
-                <rect x="14" y="3" width="7" height="7"></rect>
-                <rect x="14" y="14" width="7" height="7"></rect>
-                <rect x="3" y="14" width="7" height="7"></rect>
-              </svg>
-              <span>Semua</span>
-              <span class="chip-count" id="count-all">0</span>
-            </button>
-            <button type="button" class="neo-chip filter-chip" data-filter="5mb">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
-              </svg>
-              <span>5MB Cloud</span>
-              <span class="chip-count" id="count-5mb">0</span>
-            </button>
-            <button type="button" class="neo-chip filter-chip" data-filter="xml">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="9" y1="15" x2="15" y2="15"></line>
-              </svg>
-              <span>XML File</span>
-              <span class="chip-count" id="count-xml">0</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Preset Cards Grid (DJ Horizontal Style) -->
-        <div id="presets-grid" class="presets-grid"></div>
-      </section>
-    </main>
-
-    <!-- ==========================================
-         SITE FOOTER (CLEAN BRANDED NO DEV SECTION)
-         ========================================== -->
-    <footer class="neo-footer neo-card cyber-card">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <div class="footer-logo-row">
-            <span class="logo-mark">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                <polyline points="2 17 12 22 22 17"></polyline>
-                <polyline points="2 12 12 17 22 12"></polyline>
-              </svg>
-            </span>
-            <span class="logo-text">AM<b>NOIR</b> // NEON</span>
-          </div>
-          <p class="footer-tagline">Mesin pencari dan ekstraktor link preset Alight Motion otomatis dari video TikTok &amp; YouTube.</p>
-        </div>
-
-        <div class="footer-meta-block">
-          <div class="footer-chips">
-            <span class="neo-pill">
-              <svg class="pill-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-              </svg>
-              <span>High-Speed Engine</span>
-            </span>
-            <span class="neo-pill">
-              <svg class="pill-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
-                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
-              </svg>
-              <span>Vercel Edge Compatible</span>
-            </span>
-            <span class="neo-pill">
-              <svg class="pill-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="m4.93 4.93 14.14 14.14"></path>
-              </svg>
-              <span>100% Free &amp; No Ads</span>
-            </span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <p class="disclaimer">© 2026 AMNOIR. Tidak berafiliasi dengan TikTok maupun Alight Creative, Inc.</p>
-      </div>
-    </footer>
-  </div>
+    </section>
+  </main>
 
   <!-- ==========================================
-       WHATSAPP CHANNEL POPUP MODAL
+       CLEAN FOOTER
        ========================================== -->
-  <div id="wa-modal" class="qr-modal-backdrop hidden" role="dialog" aria-modal="true">
-    <div class="wa-modal-card neo-card cyber-card">
-      <button type="button" id="wa-modal-close" class="neo-btn qr-close-btn" aria-label="Tutup modal">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div class="footer-left">
+        <a class="brand-link" href="/" aria-label="AMNOIR Home">
+          <span class="brand-logo-mark">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+          </span>
+          <span class="brand-title">AM<b>NOIR</b></span>
+        </a>
+        <p class="footer-desc">Pencari &amp; pengunduh link preset Alight Motion otomatis dari TikTok.</p>
+      </div>
+
+      <div class="footer-right">
+        <span class="footer-chip">Vercel Edge Ready</span>
+        <span class="footer-chip">100% Free</span>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <p class="footer-copy">© 2026 AMNOIR. Tidak berafiliasi dengan TikTok maupun Alight Creative, Inc.</p>
+    </div>
+  </footer>
+
+  <!-- ==========================================
+       WHATSAPP MODAL
+       ========================================== -->
+  <div id="wa-modal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button type="button" id="wa-modal-close" class="modal-close-btn" aria-label="Tutup modal">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
-        <span>Tutup</span>
       </button>
-      <div class="card-tag">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413A11.815 11.815 0 0012.05 0z"/>
-        </svg>
-        <span>SALURAN WHATSAPP RESMI</span>
-      </div>
-      
-      <div class="wa-modal-body">
-        <div class="wa-modal-badge-icon neo-box">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
-            <path d="M12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413A11.815 11.815 0 0012.05 0zm.003 21.614h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884zm5.419-7.232c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+
+      <div class="modal-body">
+        <div class="modal-icon-wrap">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413A11.815 11.815 0 0012.05 0z"/>
           </svg>
         </div>
 
-        <h3 class="wa-modal-title">GABUNG SALURAN WHATSAPP</h3>
-        <p class="wa-modal-desc">
-          Dapatkan update link preset <b>Alight Motion 5MB &amp; XML</b> terviral, preset jedag-jedug HD, sound viral, dan tutorial editing gratis setiap hari.
-        </p>
+        <h3 class="modal-title">Gabung Saluran WhatsApp</h3>
+        <p class="modal-desc">Dapatkan update link preset Alight Motion 5MB &amp; XML terviral, sound viral, dan tutorial editing gratis setiap hari.</p>
 
-        <div class="wa-modal-actions">
-          <a
-            id="wa-channel-join-btn"
-            href="https://whatsapp.com/channel/0029Vb9Elaz6WaKpjDSrZ522"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="neo-btn btn-wa-join"
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413A11.815 11.815 0 0012.05 0z"/>
-            </svg>
-            <span>GABUNG SALURAN SEKARANG</span>
+        <div class="modal-buttons">
+          <a id="wa-channel-join-btn" href="https://whatsapp.com/channel/0029Vb9Elaz6WaKpjDSrZ522" target="_blank" rel="noopener noreferrer" class="btn primary full">
+            <span>Gabung Saluran Sekarang</span>
           </a>
-          <button type="button" id="wa-modal-later" class="neo-btn btn-wa-later">
-            Nanti Saja
-          </button>
+          <button type="button" id="wa-modal-later" class="btn text">Nanti Saja</button>
         </div>
 
-        <label class="wa-dismiss-label" for="wa-modal-dont-show">
-          <input type="checkbox" id="wa-modal-dont-show" class="wa-checkbox" />
-          <span class="wa-checkbox-custom"></span>
-          <span class="wa-checkbox-text">Jangan tampilkan popup ini lagi</span>
+        <label class="modal-dismiss-label" for="wa-modal-dont-show">
+          <input type="checkbox" id="wa-modal-dont-show" />
+          <span>Jangan tampilkan lagi</span>
         </label>
       </div>
     </div>
   </div>
 
-  <!-- ==========================================
-       FLOATING WHATSAPP BUTTON (BOTTOM-LEFT)
-       ========================================== -->
-  <a
-    href="https://whatsapp.com/channel/0029Vb9Elaz6WaKpjDSrZ522"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="floating-wa-btn neo-box"
-    id="floating-wa-btn"
-    title="Gabung Saluran WhatsApp Kami"
-  >
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413A11.815 11.815 0 0012.05 0z"/>
-    </svg>
-    <span class="wa-floating-label">Saluran WA</span>
-    <span class="wa-notification-badge">NEW</span>
-  </a>
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-wrap" aria-live="polite"></div>
 
-  <!-- ==========================================
-       TOAST NOTIFICATION CONTAINER
-       ========================================== -->
-  <div id="toast-container" class="toast-container" aria-live="polite"></div>
-
-  <!-- SCRIPTS -->
+  <!-- JavaScript -->
   <script type="module" src="app.js"></script>
 </body>
 </html>
