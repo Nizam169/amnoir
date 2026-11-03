@@ -136,6 +136,9 @@ function resetUI() {
   progressTrack.style.width = "0%";
   progressLabel.textContent = "Menghubungkan...";
   
+  const trackLine = $("#steps-track-line");
+  if (trackLine) trackLine.style.setProperty("--track-pct", "0%");
+
   // Reset step blocks
   for (let i = 1; i <= 5; i++) {
     const el = $(`#step-${i}`);
@@ -152,6 +155,12 @@ function updateStep(stepNum, totalSteps = 5) {
   const pct = Math.min(100, Math.round((stepNum / totalSteps) * 100));
   progressTrack.style.width = `${pct}%`;
   progressLabel.textContent = `Langkah ${stepNum}/${totalSteps} (${pct}%)`;
+
+  const trackLine = $("#steps-track-line");
+  if (trackLine) {
+    const linePct = Math.max(0, Math.min(100, Math.round(((stepNum - 1) / (totalSteps - 1)) * 100)));
+    trackLine.style.setProperty("--track-pct", `${linePct}%`);
+  }
 
   for (let i = 1; i <= totalSteps; i++) {
     const el = $(`#step-${i}`);
@@ -480,6 +489,8 @@ function renderResult(res) {
   }
   progressTrack.style.width = "100%";
   progressLabel.textContent = "Selesai (100%)";
+  const trackLine = $("#steps-track-line");
+  if (trackLine) trackLine.style.setProperty("--track-pct", "100%");
 
   // Check if no presets were found — video info is still shown
   if (!allPresets.length) {
