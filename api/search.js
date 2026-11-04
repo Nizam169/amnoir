@@ -2,12 +2,14 @@
  * api/search.js — Vercel Edge Function
  *
  * Searches for preset videos on TikTok / YouTube by song name or keyword.
- * Proxies to upstream search engine: https://am.izzxd.my.id/api/search
+ * Engine URL dibaca dari env var ENGINE_SEARCH_URL (jadi tidak tersimpan di repo).
  */
 
 export const config = {
   runtime: "edge",
 };
+
+const ENGINE_SEARCH_URL = process.env.ENGINE_SEARCH_URL || "https://am.izzxd.my.id/api/search";
 
 const CORS = {
   "access-control-allow-origin": "*",
@@ -33,7 +35,7 @@ export default async function handler(req) {
   }
 
   try {
-    const upstreamUrl = `https://am.izzxd.my.id/api/search?q=${encodeURIComponent(q)}&p=${encodeURIComponent(p)}${
+    const upstreamUrl = `${ENGINE_SEARCH_URL}?q=${encodeURIComponent(q)}&p=${encodeURIComponent(p)}${
       cursor ? `&cursor=${encodeURIComponent(cursor)}` : ""
     }`;
 

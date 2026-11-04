@@ -1,19 +1,19 @@
 /**
  * api/find.js — Vercel Edge Function
  *
- * Dual-Engine Alight Motion Preset Scraper:
- * 1. Primary Engine: https://am.izzxd.my.id/api/find (Fast, direct, accurate)
- * 2. Fallback Engine: https://amfinder.web.id/api/find (with automatic token challenge solver)
- *
- * Emits real-time SSE event stream for pipeline steps & terminal console.
+ * Dual-Engine Alight Motion Preset Scraper (internal-only).
+ * Engine URL dibaca dari environment variable:
+ *   - ENGINE_PRIMARY_URL  (engine utama)
+ *   - ENGINE_FALLBACK_URL (engine cadangan + solver token)
+ * Set env var tersebut di Vercel agar URL engine tidak tersimpan di repo.
  */
 
 export const config = {
   runtime: "edge",
 };
 
-const BASE_FALLBACK = "https://amfinder.web.id";
-const PRIMARY_ENGINE = "https://am.izzxd.my.id/api/find";
+const BASE_FALLBACK = process.env.ENGINE_FALLBACK_URL || "https://amfinder.web.id";
+const PRIMARY_ENGINE = process.env.ENGINE_PRIMARY_URL || "https://am.izzxd.my.id/api/find";
 const UA =
   "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
 
@@ -219,7 +219,7 @@ export default async function handler(req) {
         sendEvent("log", "[1/5] Membuka halaman video TikTok...");
 
         // ==========================================
-        // 1. PRIMARY ENGINE: am.izzxd.my.id
+        // 1. PRIMARY ENGINE
         // ==========================================
         let resolved = null;
         try {
@@ -245,7 +245,7 @@ export default async function handler(req) {
         }
 
         // ==========================================
-        // 2. FALLBACK ENGINE: amfinder.web.id (SSE)
+        // 2. FALLBACK ENGINE (SSE)
         // ==========================================
         if (!resolved) {
           sendEvent("log", "[info] Mengaktifkan engine scraper sekunder...");

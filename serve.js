@@ -17,7 +17,12 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(__dirname, "biji");
 const PORT = process.env.PORT || 3000;
-const BASE_UPSTREAM = "https://amfinder.web.id";
+
+// Engine upstream hanya di sisi server — bisa dioverride lewat env var.
+const BASE_UPSTREAM = process.env.ENGINE_FALLBACK_URL || "https://amfinder.web.id";
+const PRIMARY_ENGINE = process.env.ENGINE_PRIMARY_URL || "https://am.izzxd.my.id/api/find";
+const ENGINE_SEARCH_URL = process.env.ENGINE_SEARCH_URL || "https://am.izzxd.my.id/api/search";
+const ENGINE_SUGGEST_URL = process.env.ENGINE_SUGGEST_URL || "https://am.izzxd.my.id/api/suggest";
 const UPSTREAM = `${BASE_UPSTREAM}/api/find`;
 const UA = "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
 
@@ -266,9 +271,9 @@ async function handleApi(req, res) {
     return;
   }
 
-  // 1. Try Primary Engine: am.izzxd.my.id
+  // 1. Try Primary Engine
   try {
-    const primaryRes = await fetch(`https://am.izzxd.my.id/api/find?url=${encodeURIComponent(target)}`, {
+    const primaryRes = await fetch(`${PRIMARY_ENGINE}?url=${encodeURIComponent(target)}`, {
       headers: { "user-agent": UA, accept: "application/json" },
     });
     if (primaryRes.ok) {
@@ -404,7 +409,7 @@ async function handleSearch(req, res) {
   }
 
   try {
-    const upstreamUrl = `https://am.izzxd.my.id/api/search?q=${encodeURIComponent(q)}&p=${encodeURIComponent(p)}${
+    const upstreamUrl = `${ENGINE_SEARCH_URL}?q=${encodeURIComponent(q)}&p=${encodeURIComponent(p)}${
       cursor ? `&cursor=${encodeURIComponent(cursor)}` : ""
     }`;
     const upstreamRes = await fetch(upstreamUrl, { headers: { "user-agent": UA } });
@@ -435,7 +440,7 @@ async function handleSuggest(req, res) {
   }
 
   try {
-    const upstreamUrl = `https://am.izzxd.my.id/api/suggest?q=${encodeURIComponent(q)}&p=${encodeURIComponent(p)}`;
+    const upstreamUrl = `${ENGINE_SUGGEST_URL}?q=${encodeURIComponent(q)}&p=${encodeURIComponent(p)}`;
     const upstreamRes = await fetch(upstreamUrl, { headers: { "user-agent": UA } });
     const data = await upstreamRes.json().catch(() => ({ list: [] }));
     sendJson(res, upstreamRes.status, data);

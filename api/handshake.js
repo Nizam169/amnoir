@@ -1,18 +1,15 @@
 /**
  * api/handshake.js — Vercel Edge Function
  *
- * Proxies the security challenge handshake to upstream scraper:
- * https://amfinder.web.id/api/v/7f91a2e4
- *
- * This allows the client browser to calculate genuine canvas fingerprinting
- * and WebCrypto Proof-of-Work locally, returning a verified human token.
+ * Proxies the security challenge handshake to the upstream scraper.
+ * Engine URL dibaca dari env var ENGINE_HANDSHAKE_URL.
  */
 
 export const config = {
   runtime: "edge",
 };
 
-const BASE_URL = "https://amfinder.web.id";
+const BASE_URL = process.env.ENGINE_FALLBACK_URL || "https://amfinder.web.id";
 const UA =
   "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
 

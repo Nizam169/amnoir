@@ -2,12 +2,14 @@
  * api/suggest.js — Vercel Edge Function
  *
  * Provides live search suggestions for DJ / song / preset keywords.
- * Proxies to: https://am.izzxd.my.id/api/suggest
+ * Engine URL dibaca dari env var ENGINE_SUGGEST_URL.
  */
 
 export const config = {
   runtime: "edge",
 };
+
+const ENGINE_SUGGEST_URL = process.env.ENGINE_SUGGEST_URL || "https://am.izzxd.my.id/api/suggest";
 
 const CORS = {
   "access-control-allow-origin": "*",
@@ -32,7 +34,7 @@ export default async function handler(req) {
   }
 
   try {
-    const upstreamUrl = `https://am.izzxd.my.id/api/suggest?q=${encodeURIComponent(q)}&p=${encodeURIComponent(p)}`;
+    const upstreamUrl = `${ENGINE_SUGGEST_URL}?q=${encodeURIComponent(q)}&p=${encodeURIComponent(p)}`;
     const res = await fetch(upstreamUrl, {
       headers: {
         "user-agent": "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36",
