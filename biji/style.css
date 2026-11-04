@@ -263,8 +263,8 @@ img, video {
 }
 
 .btn.primary {
-  height: 52px;
-  padding: 0 24px;
+  height: 56px;
+  padding: 0 26px;
   background: #ffffff;
   color: #000000;
   font-size: 14.5px;
@@ -272,6 +272,7 @@ img, video {
   letter-spacing: -0.01em;
   box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
   flex-shrink: 0;
+  align-self: center;
 }
 
 .btn.primary:hover:not(:disabled) {
@@ -411,16 +412,30 @@ img, video {
 .input-field {
   flex: 1;
   min-width: 0;
-  height: 52px;
+  height: 56px;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 10px 0 18px;
+  padding: 0 10px 0 20px;
   background: #111115;
   border: 1.5px solid #282830;
   border-radius: var(--radius-full);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Eksplisit: kedua kolom pencarian wajib besar (link video & ketik lagu) */
+#field-url,
+#field-query {
+  height: 56px !important;
+  flex: 1 1 auto !important;
+}
+
+#field-url input,
+#search-query-input {
+  font-size: 17px !important;
+  font-weight: 450;
+  height: 100% !important;
 }
 
 .input-field:focus-within {
@@ -449,7 +464,7 @@ img, video {
   flex: 1;
   min-width: 0;
   height: 100%;
-  font-size: 16px;
+  font-size: 16.5px;
   font-weight: 450;
   color: #ffffff;
   letter-spacing: -0.01em;
@@ -459,6 +474,12 @@ img, video {
   color: #585863;
   font-size: 15px;
   font-weight: 400;
+}
+
+/* Placeholder & icon kolom ketik kompak rapi */
+.field-icon svg {
+  width: 17px;
+  height: 17px;
 }
 
 .field-hint {
@@ -1616,16 +1637,19 @@ img, video {
 
   .btn.primary {
     width: 100%;
-    height: 48px;
-    font-size: 14.5px;
+    height: 54px;
+    font-size: 15px;
   }
 
-  .input-field {
-    height: 50px;
-    padding: 0 10px 0 16px;
+  .input-field,
+  #field-url,
+  #field-query {
+    height: 54px !important;
+    padding: 0 10px 0 18px;
   }
 
-  .input-field input {
-    font-size: 15.5px;
+  .input-field input,
+  #search-query-input {
+    font-size: 16px !important;
   }
 }
